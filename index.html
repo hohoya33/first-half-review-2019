@@ -55,47 +55,69 @@
 
 					<section>
 						<h2>옵저버 패턴</h2>
-						<p>옵저버 패턴은 데이터 종속적인 인터페이스가 데이터의 변화를 감시하는 구조</p>
-						<p>ex) 엑셀 표 - 사용자가 스프레드시트의 값을 변경 시 표, 그래프, 차트에도 변화<br>이때 모든 요소들이 동시에, 즉각적으로 변화</p>
+						<p>한 객체의 상태가 바뀌면 그 객체에 의존하는 다른 객체들에게<br>그 정보를 알려주는 디자인 패턴 (일대다 의존성)</p>
+						<p>ex) 엑셀 표 - 사용자가 스프레드시트의 값 변경 → 표, 그래프, 차트에도 변화<br>이때 모든 요소들이 동시에 즉각적으로 변화</p>
+						<div style="width:42%;margin:0 auto;padding:10px 10px 0px;background:#fff"><img src="img/observer.png" alt=""></div>
 
 						<!-- 모든 객체들의 신속한 동기화를 위해서는 데이터를 보유한 주체(Subject)를 여러 객체들이 감시(Observe)하는 방식이 가장 효과적 -->
-						<!-- <p>옵저버는 페이지에서 발생하는 어떤 일들을 관찰</p> -->
+						<!-- <p>옵저버는 페이지에서 발생하는 어떤 일들을 감시</p> -->
 						<!-- 보다 간단하게 옵저버 패턴을 사용할 수 있는 방법은 없을까요?
 						강력한 기능이 탑재된 것은 아니지만 이미 자바스크립트가 자체적으로 보유하고 있는 쏠쏠한 옵저버들이 여럿 있습니다. -->
 					</section>
 
+					<section>
+						<h2>setInterval API</h2>
+						<!-- <p>이전에는 객체의 속성 변경을 감지하거나 요소가 출력된 것을 감지 하는것은 꽤 어렵거나 비용이 많이 드는 일</p> -->
+						<p>이전에는 setInterval을 사용하여 변경사항이 발생했는지 반복적으로 실행</p>
+						<p>타이머를 동시에 여러 개 사용 시 웹 사이트의 성능을 크게 저하</p>
+
+						<!-- <p>setInterval 매 초마다 값을 모니터링하고 스타일을 변경 한 코드를 작성</p> -->
+
+						<pre><code class="js">
+setInterval(function() {
+ //...
+}, 5000); //5초 마다 실행
+                        </code></pre>
+					</section>
+
+
 
 					<section>
 						<h2>JS Observers</h2>
-						<p>자바스크립트에서 자체적으로 제공하는 옵저버</p>
+						<p>최신 브라우저에서 제공하는 옵저버</p>
 						<ul>
-							<li>MutationObserver - 객체의 속성 변경 감시</li>
-							<li>IntersectionObserver - 뷰포트와 대상 엘리먼트 교차 감시</li>
-							<li>ResizeObserver - 객체의 너비, 높이의 변화 감시</li>
+							<li>MutationObserver - 엘리먼트의 속성 변경 감시</li>
+							<li>IntersectionObserver - 뷰포트와 대상 엘리먼트의 교차 감시</li>
+							<li>ResizeObserver - 엘리먼트의 너비, 높이 변화 감시</li>
 							<li>PerformanceObserver - 프로세스 성능 모니터링</li>
 							<li>ReportingObserver - 웹 사이트의 표준 및 정책 준수 현황 감시</li>
 						</ul>
-<!--
+					</section>
+
+					<!--
+					<section>
+						<h2>Observers 기본 구조</h2>
+
 						<pre><code class="js">
-// 일반적인 옵저버 구조
 let observer = new YOUR-TYPE-OF-OBSERVER(function (entries) {
   // entries: 관찰되는 엘리먼트들의 배열
   entries.forEach(entry => {
       // 각 특정 엔트리를 사용하는 코드 작성
   });
 });
+
 // 옵저버에게 지금 무엇을 관찰하는지 알린다.
 observer.observe(WHAT-TO-OBSERVE);
-                        </code></pre> -->
+                        </code></pre>
 					</section>
-
+ 					-->
 
 					<section>
 						<h2>MutationObserver</h2>
 						<!-- <p>DOM의 변경 사항을 감지하기 위해 제공하는 웹 API</p> -->
 
 						<p>DOM 요소를 감지하면서 변경 사항이 있을 경우 콜백 실행</p>
-						<p>노드가 새로 추가되거나 제거, 속성 변경, 텍스트 변경을 모니터링</p>
+						<p>노드가 새로 추가되거나 제거, 속성, 텍스트 내용 변경을 모니터링</p>
 
 						<!-- <ul>
 							<li>대상 요소의 속성 변화 감시</li>
@@ -105,21 +127,15 @@ observer.observe(WHAT-TO-OBSERVE);
 						</ul> -->
 					</section>
 
-					<section>
-						<h2>setInterval</h2>
-						<p>이전에는 개체의 속성 변경을 감지하거나 요소가 출력 된 것을 감지 하는것은 꽤 어렵거나 비용이 많이 드는 일</p>
-						<p>setInterval 매 초마다 값을 모니터링하고 스타일을 변경 한 코드를 작성</p>
-					</section>
-
 
 					<section>
 						<h2>다국어 프로젝트</h2>
 						<ul>
 							<li>무료로 제공되는 구글 웹 사이트 번역기 사용</li>
-							<li>개발에 필요한 api가 지원이 안되는 단점</li>
+							<li>개발에 필요한 api가 별도 지원이 안되는 단점</li>
 							<li>사용자가 언어 변경 후, 변역이 완료되면 callback 함수 필요</li>
 							<!-- <li>번역 시 자식노드에 font 태그 생성</li> -->
-							<li>특정 엘리먼트를 감지하고 있다가 이전 텍스트와 현재 텍스트 비교</li>
+							<li>특정 엘리먼트를 감지하고 있다가 변경이 일어나면<br>이전 텍스트와 현재 텍스트 비교</li>
 						</ul>
 						<!-- 상태, 구글 웹 사이트 번역기 언어 변경  =>  DOM 변형 감지  => callback 함수 변경된 언어 전달 (새로고침) -->
 						<p>이때 변경 감지를 위해 setInterval 대신 Mutation Observer API 사용</p>
@@ -138,16 +154,14 @@ var observer = new MutationObserver(callback);
 
 					<section>
 						<h2>감시 하기</h2>
-						<p>감시할 내용 설정 후 DOM 노드에 연결</p>
+						<p>감시할 DOM 요소와 내용을 설정 후 옵저버에 전달</p>
 						<pre><code class="js">
 // 감시할 DOM 요소
-var target = document.getElementById('some-id');
+var target = document.getElementById('transObserver');
 
 // 감시할 내용 옵션
 var config = {
-	attributes: true,
-	childList: true,
-	characterData: true
+    childList: true, // 자식요소 font 태그 생성 감지
 };
 
 // 모니터링 시작
@@ -157,15 +171,17 @@ observer.observe(target, config);
 
 
 					<section>
-						<h2>MutationObserver 옵션</h2>
-						<!-- childList : 타겟 노드의 자식 엘레멘트(텍스트 노드를 포함)들의 추가 혹은 제거를 관찰해야할 때 true
-						attributes : 타겟 노드의 속성들의 변형들을 관찰해야할 때 true
-						characterData : 타겟 노드의 데이터를 관찰해야할 때 true
-						subtree : 타겟 노드부터 자손 노드들의 변형들까지 관찰해야할 때 true
-						attributeOldValue : attributes이 true면서 타겟 노드의 변경된 속성들 이전 값을 기록해야할 때 true
-						characterDataOldValue : characterData true면서 타겟 노드의 변경된 데이터 이전 값을 기록해야할 때 true
-						attributeFilter : 모든 속성들을 관찰하고 싶지않을 때 관찰할 속성명의 Array -->
-						<pre><code class="js">
+						<h2>감시할 내용 옵션</h2>
+						<ul>
+							<li>childList: 대상 노드의 자식 요소 (텍스트 포함)의 추가 및 제거</li>
+							<li>attributes: 대상 노드의 속성 변경</li>
+							<li>characterData: 대상 노드의 텍스트 값에 대한 변경 사항</li>
+							<li>subtree: 대상 노드 및 대상요소의 자식 자손까지 모두 감시</li>
+							<li>attributeOldValue: 속성 값이 변경 전의 값</li>
+							<li>characterDataOldValue: 요소 내부 텍스트를 변경할 경우 이전 값</li>
+							<li>attributeFilter: 모든 속성을 관찰 할 필요가 없는 경우 속성명들을 배열 정의</li>
+						</ul>
+<!-- 						<pre><code class="js">
 var config = {
 	childList: 대상 노드의 자식 요소 (텍스트 포함)의 추가 및 제거 관찰
 	attributes: 대상 노드의 속성 변경 감시
@@ -175,20 +191,13 @@ var config = {
 	characterDataOldValue: 요소 내부 텍스트를 변경할 경우 이전 값 (characterData가 true 설정)
 	attributeFilter: 모든 속성을 관찰할 필요가없는 경우 속성명들을 배열 형태로 정의 예를 들어 ['value']일 경우 해당 요소의 value 값만 바뀔 경우 이벤트 발생
 };
-                        </code></pre>
+                        </code></pre> -->
 					</section>
 
 
 					<section>
 						<h2>callback</h2>
-						<pre><code class="js">
-var callback = (mutations, observer) => {
-	mutations.forEach(mutation => {
-		console.log(mutation.type);
-	});
-};
-
-addedNodes: [], // 추가된 자식 노드,
+<!-- ,
 attributeName: null, // 변경된 속성명
 attributeNamespace: null, // 변경된 속성네임스페이스
 nextSibling: null, // 다음 형제 태그
@@ -196,14 +205,64 @@ previousSibling: null, // 이전 형제 태그
 oldValue: null, // 변경전 값
 removedNodes: [], // 제거된 자식 노드
 target: Element, // 대상 태그
-type: 'attributes' || 'childList' || 'characterData' // 어떤 종류가 변경되었는지
+type: 'attributes' || 'childList' || 'characterData' // 어떤 종류가 변경되었는지 -->
 
+						<pre><code class="js">
+var callback = (mutations, observer) => {
+	mutations.forEach(mutation => {
+		var newValue, oldValue, language;
+		// type: 어떤 종류가 변경되었는지 확인
+		// addedNodes: 추가된 자식 노드
+		if (mutation.type === 'childList' && mutation.addedNodes.length) {
+			// target: 대상 태그
+			newValue = mutation.target.innerText;
+			oldValue = mutation.target.getAttribute('data-default-txt');
+
+			if (newValue !== oldValue) {
+				// 언어변경 callback
+			} else if (newValue == oldValue) {
+				// 한국어
+			}
+		}
+	});
+};
                         </code></pre>
 					</section>
 
+
+
+					<section>
+						<iframe width="100%" height="500" src="https://jsfiddle.net/hohoya33/6prg1kh5/85/embedded/result,js/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+					</section>
+
+
+					<section>
+						<h2>placeholder 번역 대응</h2>
+						<p>placeholder 값을 가져와 임시 dom 생성 후 옵저버로 감시<br>번역 완료 후, 변경된 언어로 placeholder 변경</p>
+
+						<pre><code class="js">
+$('[placeholder]:not(.translated)').each(function(){
+	var welTarget = $(this);
+	var sText = welTarget.attr('placeholder');
+	welTarget.after('<span class="trans_placeholder blind" data-default-txt="'+ sText +'">'+ sText +'</span>').addClass('translated');
+
+	observer.observe(welTarget.next('.trans_placeholder').get(0), {childList: true});
+});
+
+// observer callback
+mutation.target.prev('[placeholder].translated').get(0).placeholder = mutation.target.innerText;
+                        </code></pre>
+					</section>
+
+
+					<section>
+						<iframe width="100%" height="500" src="https://jsfiddle.net/hohoya33/71dsz8ba/embedded/result,js/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+					</section>
+
+
 					<section>
 						<h2>브라우저 지원</h2>
-						<!-- <p>IE11까지 지원하는 뛰어난 호환</p> -->
+						<p>지원되지 않는 브라우저 <a href="https://github.com/megawac/MutationObserver.js" target="_blank">Polyfill</a> 사용</p>
 
 						<iframe src="https://caniuse.bitsofco.de/embed/index.html?feat=mutationobserver&amp;periods=future_1,current,past_1,past_2" frameborder="0" width="100%" height="500px"></iframe>
 					</section>
@@ -214,8 +273,11 @@ type: 'attributes' || 'childList' || 'characterData' // 어떤 종류가 변경�
 
 						<!-- <p>웹이 발전함에 따라 이러한 변화를 체크하는 것의 필요성이 높아졌고 그래서 나오게 된 API이다.</p> -->
 						<p>타겟 엘리먼트와 뷰포트가<br>교차하는 부분의 변화를 비동기적으로 관찰하는 API</p>
+						<p>무한 스크롤 이미지 레이지 로딩 시 IntersectionObserver API 사용</p>
+
 						<!-- <p>scroll 이벤트 접근 방식은 여러 브라우저에서 가장 호환성이 좋긴 하지만, 최신 브라우저는 Intersection Observer API를 통해 요소 확인 작업을 수행하는 더욱 우수하고 효율적인 방식을 제공</p> -->
-						<p>요소가 페이지에있는 위치를 지속적으로 계산하도록 설정할 필요없이 요소가 뷰포트에 들어가거나 빠져 나올 때마다 콜백 트리거</p>
+
+						<!-- <p>요소가 페이지에 있는 위치를 지속적으로 계산할 필요 없이<br>대상 요소가 뷰포트에 들어오거나 벗어날 때 콜백 실행</p> -->
 
 						<!-- 요소가 뷰포트와 관련된 위치를 추적하기 위해 수행해야 할 작업을 단순화
 						모든 계산을 브라우저로 오프로드하는 방법을 제공
@@ -295,7 +357,10 @@ const observer = new IntersectionObserver(callback, options);
 
 					<section>
 						<h2>root</h2>
-						<p>교차 영역의 기준이 될 root 엘리먼트, 이 속성을 정의하지 않으면 자동으로 브라우저 뷰포트가 사용</p>
+						<ul>
+							<li>교차 영역의 기준이 될 root 엘리먼트</li>
+							<li>이 속성을 정의하지 않으면 자동으로 브라우저 뷰포트가 사용</li>
+						</ul>
 						<img src="img/root.png" alt="" width="80%">
 					</section>
 
@@ -313,13 +378,15 @@ const observer = new IntersectionObserver(callback, options);
 						<h2>threshold</h2>
 						<p>이벤트 발생 빈도를 늘리려면 threshold 옵션을 사용</p>
 						<!-- <p>intersectionRatio에 의해 교차하는 영역의 비율을 얻을 수 있지만 콜백이 불리는 타이밍이 교차 타이밍뿐만은 0%와 100% 등별로 쓸모없는 값 밖에 나오지 않는다. 이 표시가 0(표시되지 않은) 100(모두 표시되는) 중 하나 밖에 없기 때문</p> -->
-						<p>다음과 같이 인수를 설정하면 교차 영역이 20% 변할 때마다 callback 호출<br>threshold: [0, 0.2, 0.4, 0.6, 0.8, 1.0]</p>
+
 						<ul>
 							<li>0.0부터 1.0 사이의 숫자 혹은 이 숫자들로 이루어진 배열</li>
-							<li>callback을 실행시킬 지점</li>
-							<li>1.0이면 root요소 내부에 100% callback 호출</li>
-							<li>0.5이면 root요소 내부에 50%일 때 callback 호출</li>
+							<!-- <li>callback을 실행시킬 지점</li> -->
+							<li>1.0이면 root요소 내부에 100% callback</li>
+							<li>0.5이면 root요소 내부에 50%일 때 callback</li>
 						</ul>
+
+						<p>다음과 같이 인수를 설정하면 교차 영역이 20% 변할 때마다 callback<br>threshold: [0, 0.2, 0.4, 0.6, 0.8, 1.0]</p>
 						<img src="img/threshold.png" alt="" width="80%">
 					</section>
 
@@ -327,22 +394,18 @@ const observer = new IntersectionObserver(callback, options);
 
 					<section>
 						<h2>callback</h2>
-						<p>타겟 엘리먼트가 교차되었을 때 실행 함수 (메인 쓰레드에서 실행)</p>
-						<p>타겟이 화면에 완전히 표시 되면 active 클래스 추가</p>
+						<p>타겟 엘리먼트가 교차되었을 때 실행 함수 (메인 쓰레드에서 실행)<br>타겟이 화면에 완전히 표시 되면 active 클래스 추가</p>
+
 						<pre><code class="js">
 
 const callback = (entries, observer) => {
 	entries.forEach(entry => {
-	if (entry.isIntersecting && entry.intersectionRatio == 1 ) {
-      entry.target.classList.add('active');
-    } else {
-      entry.target.classList.remove('active');
-    }
-
-	// entry는 탐지된 엘레멘트의 정보를 가지고 있다.
-	// ex)
-	//    entry.isIntersecting
-	//    entry.boundingClientRect
+		// entry는 감지된 엘레멘트의 정보
+		if (entry.isIntersecting && entry.intersectionRatio == 1 ) {
+			entry.target.classList.add('active');
+		} else {
+			entry.target.classList.remove('active');
+		}
 	});
 };
                         </code></pre>
@@ -352,19 +415,19 @@ const callback = (entries, observer) => {
 					<section>
 						<h2>entry 객체</h2>
 						<dl>
-							<dt>rootBounds</dt>
+							<dt>- rootBounds</dt>
 							<dd>root 엘리먼트 정보</dd>
-							<dt>boundingClientRect</dt>
+							<dt>- boundingClientRect</dt>
 							<dd>target 엘리먼트 정보</dd>
-							<dt>intersectionRect</dt>
+							<dt>- intersectionRect</dt>
 							<dd>교차된 영역 정보</dd>
-							<dt>intersectionRatio</dt>
+							<dt>- intersectionRatio</dt>
 							<dd>교차하는 영역 비율<br>threshold와 같이 0.0 ~ 1.0 값</dd>
-							<dt>isIntersecting</dt>
+							<dt>- isIntersecting</dt>
 							<dd>target이 교차 영역에 있으면 true<br>그 외는 false</dd>
-							<dt>target</dt>
+							<dt>- target</dt>
 							<dd>target 엘리먼트</dd>
-							<dt>time</dt>
+							<dt>- time</dt>
 							<dd>교차가 기록된 시간</dd>
 						</dl>
 						<img src="img/callback.png" alt="" width="50%" style="vertical-align:top">
@@ -372,7 +435,7 @@ const callback = (entries, observer) => {
 
 					<section>
 						<h2>대상 추가</h2>
-						<p>일단 관찰자가 만들어지면, 남은 유일한 것은 그것이 관찰 할 수 있도록 목표 요소를 전달</p>
+						<p>일단 관찰자가 만들어지면<br>옵저버가 감시 할 수 있도록 목표 요소를 전달</p>
 						<pre><code class="js">
 // 대상 요소는 root 요소의 자식이어야 됨
 // Single element
@@ -392,13 +455,13 @@ images.forEach((el) => {
 						<h2>Methods</h2>
 						<dl>
 							<dt>observer.observe(targetElement)</dt>
-							<dd>타겟 엘리먼트에 대한 IntersectionObserver 등록 (관찰을 시작)</dd>
-							<dt>observer.unobserve(targetElement)</dt>
-							<dd>하나의 대상 요소 관찰을 중지하도록 지시</dd>
-							<dt>observer.disconnect()</dt>
-							<dd>다수의 엘리먼트를 관찰하고 있을 때, 모든 관측을 중지하도록 지시</dd>
-							<dt>observer.takerecords()</dt>
-							<dd>교차하는지 여부에 관계없이 모든 관찰 대상 목록을 반환</dd>
+							<dd>타겟 엘리먼트에 대한 IntersectionObserver 등록 (감시 시작)</dd>
+							<dt style="margin-top: 20px">observer.unobserve(targetElement)</dt>
+							<dd>하나의 대상 요소 감시을 중지하도록 지시</dd>
+							<dt style="margin-top: 20px">observer.disconnect()</dt>
+							<dd>다수의 엘리먼트를 감시하고 있을 때, 모든 관측을 중지하도록 지시</dd>
+							<dt style="margin-top: 20px">observer.takerecords()</dt>
+							<dd>교차하는지 여부에 관계없이 모든 감시 대상 목록을 반환</dd>
 						</dl>
 					</section>
 
@@ -409,8 +472,8 @@ images.forEach((el) => {
 
 
 					<section>
-						<p>비동기적으로 실행, 메인 스레드에 영향을 주지 않으면서 변경 사항 관찰</p>
-						<p>IntersectionObserverEntry 속성 활용으로<br>getBoundingClientRect()를 호출한 것과 같은 결과</p>
+						<p>비동기적으로 실행, 메인 스레드에 영향을 주지 않으면서 변경 사항 감시</p>
+						<p>getBoundingClientRect()를 호출한 것과 같은 결과</p>
 						<!-- <p>getBoundingClientRect() 함수를 호출할 필요가 없어 리플로우 현상을 방지</p> -->
 
 						<img src="img/observer_inview.png" alt="" width="80%">
@@ -419,7 +482,7 @@ images.forEach((el) => {
 
 					<section>
 						<h2>브라우저 지원</h2>
-						<p>대부분의 주요 브라우저에서 지원 <a href="https://github.com/w3c/IntersectionObserver/tree/master/polyfill" target="_blank">polyfill</a></p>
+						<p>지원되지 않는 브라우저 <a href="https://github.com/w3c/IntersectionObserver/tree/master/polyfill" target="_blank">Polyfill</a> 사용</p>
 
 						<iframe src="https://caniuse.bitsofco.de/embed/index.html?feat=intersectionobserver&amp;periods=future_1,current,past_1,past_2" frameborder="0" width="100%" height="500px"></iframe>
 					</section>
@@ -439,12 +502,14 @@ if (!('IntersectionObserver' in window)) {
 					</section>
 
 
+					<!--
 					<section>
 						<h2>ResizeObserver</h2>
 						<p>DOM 객체의 크기 변화를 감시하는 옵저버</p>
 						<p>기기 너비가 일정 픽셀 이하로 줄어들었을 때 콜백 함수를 활용하거나 섬세한 애니메이션을 필요로 할 때 유용</p>
 						<p>최신 크롬 환경에서만 지원, 폴리필을 다운받아 사용 추천</p>
 					</section>
+					-->
 
 				</section>
 
@@ -597,11 +662,11 @@ if (!('IntersectionObserver' in window)) {
 						<!-- <p>체감 속도를 향상</p> -->
 						<!-- <p>페이지에 보이지도 않는 이미지를 미리 받아둘 필요가 없는 경우<br>이미지를 나중에 로드하는 방법</p> -->
 						<p>이미지를 처음부터 불러오는 게 아니라<br>사용자가 스크롤을 해서 이미지 엘리먼트가 화면에 등장하는 순간 로딩 시작</p>
-						<p>모든 이미지를 불러올 필요가 없 성능 개선 유용</p>
+						<p>모든 이미지를 한번에 불러올 필요가 없어 성능 개선 유용</p>
 						<p>IntersectionObserver API 사용</p>
 
 
-						<p><a href="https://addyosmani.com/blog/lazy-loading/">참고 (네이티브 이미지 레이지 로딩)</a></p>
+						<!-- <p><a href="https://addyosmani.com/blog/lazy-loading/">참고 (네이티브 이미지 레이지 로딩)</a></p> -->
 						<!--
 						<pre><code class="js">
 <img src="celebration.jpg" loading="lazy" alt="..." />
@@ -687,14 +752,14 @@ if (oInfinitePersist.get('') !== null) {
 					<section>
 						<h2>로딩 인디케이터</h2>
 
-						웹페이지를 그리기 전, 서버를 거치는 과정에서 유저, 상품, 주문 정보 등의 데이터를 DB 또는 외부 API 호출
-						웹브라우저는 데이터 로딩이 완료될 때까지 대기
+						<p>웹페이지를 그리기 전, 서버를 거치는 과정에서 유저, 상품, 주문 정보 등<br>데이터를 DB 또는 외부 API 호출</p>
+						<p>웹브라우저는 데이터 로딩이 완료될 때까지 대기</p>
 
-						따라서 데이터 로딩 시간이 길어질수록 빈 화면이 노출되거나 현재 페이지에 멈춰있게 됩니다.
+						<!-- 따라서 데이터 로딩 시간이 길어질수록 빈 화면이 노출되거나 현재 페이지에 멈춰있게 됩니다. -->
 
 
 
-						<p>사용자에게 기다려 달라는 의미. 하지만 텅빈 화면을 오래 봐야 하는 단점</p>
+						<p>사용자에게 기다려 달라는 의미지만 텅빈 화면을 오래 봐야 하는 단점</p>
 						<img src="img/ssg_loding.png" alt="" width="30%">
 					</section>
 
@@ -716,13 +781,9 @@ if (oInfinitePersist.get('') !== null) {
 
 					<section>
 						<h2>데이터 지연 로딩</h2>
-						<p>가장 중요한 UI 영역을 먼저 제공하고, 중요도가 떨어지는 영역을 이후 제공해 체감 속도를 향상</p>
-지연이 필요한 영역의 데이터 호출 로직을 서버 controller에서 제거하고,
-클라이언트 단에서 필요한 시점에 API를 호출하는 방식으로 전환
-
-자연스러운 UX를 위해 지연되는 시간 동안 스켈레톤으로 그 영역을 채웠습니다.
-
-
+						<p>가장 중요한 UI 영역을 먼저 제공하고,<br>중요도가 떨어지는 영역을 이후 제공해 체감 속도 향상</p>
+						<p>지연이 필요한 영역의 데이터 호출 로직을 서버 controller에서 제거<br>클라이언트 단에서 필요한 시점에 API를 호출하는 방식으로 전환</p>
+						<p>자연스러운 UX를 위해 지연되는 시간 동안 스켈레톤 스크린 적용</p>
 					</section>
 
 					<section>
