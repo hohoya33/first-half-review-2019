@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-		<title>상반기 월간 리뷰</title>
+		<title>상반기 리뷰</title>
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/custom.css">
 		<!-- Code syntax highlighting -->
@@ -32,7 +32,7 @@
 			<div class="slides">
 				<section>
 					<div><img src="img/js_logo.png " alt="" style="width:18%;"></div>
-					<h1 style="margin-bottom:100px;font-size:50px;letter-spacing:normal">상반기 월간 리뷰</h1>
+					<h1 style="margin-bottom:100px;font-size:50px;letter-spacing:normal">상반기 리뷰</h1>
 					<p>2019. 5. 9</p>
 					<p>서비스 개발1팀 UI파트 - 김재호</p>
 				</section>
@@ -56,7 +56,7 @@
 					<section>
 						<h2>옵저버 패턴</h2>
 						<p>한 객체의 상태가 바뀌면 그 객체에 의존하는 다른 객체들에게<br>그 정보를 알려주는 디자인 패턴 (일대다 의존성)</p>
-						<p>ex) 엑셀 표 - 사용자가 스프레드시트의 값 변경 → 표, 그래프, 차트에도 변화<br>이때 모든 요소들이 동시에 즉각적으로 변화</p>
+						<p>엑셀 표 - 사용자가 스프레드시트 값 변경 → 표, 그래프, 차트 변화<br>이때 모든 요소들이 동시에 즉각적으로 반응</p>
 						<div style="width:42%;margin:0 auto;padding:10px 10px 0px;background:#fff"><img src="img/observer.png" alt=""></div>
 
 						<!-- 모든 객체들의 신속한 동기화를 위해서는 데이터를 보유한 주체(Subject)를 여러 객체들이 감시(Observe)하는 방식이 가장 효과적 -->
@@ -68,15 +68,27 @@
 					<section>
 						<h2>setInterval API</h2>
 						<!-- <p>이전에는 객체의 속성 변경을 감지하거나 요소가 출력된 것을 감지 하는것은 꽤 어렵거나 비용이 많이 드는 일</p> -->
-						<p>이전에는 setInterval을 사용하여 변경사항이 발생했는지 반복적으로 실행</p>
-						<p>타이머를 동시에 여러 개 사용 시 웹 사이트의 성능을 크게 저하</p>
-
 						<!-- <p>setInterval 매 초마다 값을 모니터링하고 스타일을 변경 한 코드를 작성</p> -->
+						<p>setInterval을 사용하여 일정 시간마다 반복해서 변경사항이 있는지 확인</p>
+						<ul>
+							<li>정확한 지연시간을 보장해 주지 않음</li>
+							<li>여러 개의 타이머 사용 시 웹 사이트 성능 저하 원인</li>
+							<li>메모리 절약을 위해 더 이상 필요하지 않을 때 취소시키는 것이 중요</li>
+						</ul>
+
+
+						<!-- 일반적으로 setInterval은 지정한 시간을 무한 루프 돌리게 된다
+						잘못쓰게 되면 무한 루프들이 중복되어 사이트가 느려지는 병목현상이 발생
+						이런걸 방지 하기 위해서는 정확하게 한 변수에 setInterval을 정의 하고 이 변수를 clearInterval
+						해줘야된다 -->
+
 
 						<pre><code class="js">
-setInterval(function() {
+var timeId = setInterval(function() {
  //...
-}, 5000); //5초 마다 실행
+}, 5000); // 5초 마다 실행
+
+// clearInterval(timeId);
                         </code></pre>
 					</section>
 
@@ -84,7 +96,7 @@ setInterval(function() {
 
 					<section>
 						<h2>JS Observers</h2>
-						<p>최신 브라우저에서 제공하는 옵저버</p>
+						<p>최신 브라우저에서 제공하는 옵저버 목록</p>
 						<ul>
 							<li>MutationObserver - 엘리먼트의 속성 변경 감시</li>
 							<li>IntersectionObserver - 뷰포트와 대상 엘리먼트의 교차 감시</li>
@@ -131,22 +143,21 @@ observer.observe(WHAT-TO-OBSERVE);
 					<section>
 						<h2>다국어 프로젝트</h2>
 						<ul>
-							<li>무료로 제공되는 구글 웹 사이트 번역기 사용</li>
-							<li>개발에 필요한 api가 별도 지원이 안되는 단점</li>
-							<li>사용자가 언어 변경 후, 변역이 완료되면 callback 함수 필요</li>
+							<li>구글 웹 사이트 번역기 사용 (무료제공)</li>
+							<li>개발에 필요한 api가 별도로 지원 안되는 문제</li>
+							<li>사용자가 언어 변경 후, 변역이 완료되면<br>i18n 다국어 처리 및 페이지 새로고침을 위한 callback 함수 필요</li>
 							<!-- <li>번역 시 자식노드에 font 태그 생성</li> -->
-							<li>특정 엘리먼트를 감지하고 있다가 변경이 일어나면<br>이전 텍스트와 현재 텍스트 비교</li>
 						</ul>
 						<!-- 상태, 구글 웹 사이트 번역기 언어 변경  =>  DOM 변형 감지  => callback 함수 변경된 언어 전달 (새로고침) -->
+						<p>특정 엘리먼트를 감지하고 있다가 변경이 일어나면<br>이전 텍스트와 현재 텍스트 비교</p>
 						<p>이때 변경 감지를 위해 setInterval 대신 Mutation Observer API 사용</p>
 					</section>
 
 
 					<section>
 						<h2>사용 방법</h2>
-						<p>DOM 변경을 감지했을 때 처리할 콜백함수를 가진 옵저버 생성</p>
+						<p>MutationObserver 인스턴스 생성</p>
 						<pre><code class="js">
-// MutationObserver 인스턴스 만들기
 var observer = new MutationObserver(callback);
                         </code></pre>
 					</section>
@@ -154,29 +165,30 @@ var observer = new MutationObserver(callback);
 
 					<section>
 						<h2>감시 하기</h2>
-						<p>감시할 DOM 요소와 내용을 설정 후 옵저버에 전달</p>
+						<p>감시할 DOM과 옵션들을 설정 후 옵저버에 전달</p>
+						<!-- 특정 노드에서 DOM 변경의 알림을 받을 수 있도록 MutationObserver 인스턴스를 등록.  -->
 						<pre><code class="js">
-// 감시할 DOM 요소
+// DOM 변경을 감시할 요소
 var target = document.getElementById('transObserver');
 
-// 감시할 내용 옵션
+// 감시자 설정
 var config = {
     childList: true, // 자식요소 font 태그 생성 감지
 };
 
-// 모니터링 시작
+// 대상 요소, 설정 전달 모니터링 시작
 observer.observe(target, config);
                         </code></pre>
 					</section>
 
 
 					<section>
-						<h2>감시할 내용 옵션</h2>
+						<h2>감시자 설정</h2>
 						<ul>
-							<li>childList: 대상 노드의 자식 요소 (텍스트 포함)의 추가 및 제거</li>
-							<li>attributes: 대상 노드의 속성 변경</li>
-							<li>characterData: 대상 노드의 텍스트 값에 대한 변경 사항</li>
-							<li>subtree: 대상 노드 및 대상요소의 자식 자손까지 모두 감시</li>
+							<li>childList: 대상 노드 자식 요소 (텍스트 포함)의 추가 및 제거</li>
+							<li>attributes: 대상 노드 속성 변경</li>
+							<li>characterData: 대상 노드 텍스트 값에 대한 변경 사항</li>
+							<li>subtree: 대상 노드 자식 자손까지 모두 감시</li>
 							<li>attributeOldValue: 속성 값이 변경 전의 값</li>
 							<li>characterDataOldValue: 요소 내부 텍스트를 변경할 경우 이전 값</li>
 							<li>attributeFilter: 모든 속성을 관찰 할 필요가 없는 경우 속성명들을 배열 정의</li>
@@ -197,33 +209,22 @@ var config = {
 
 					<section>
 						<h2>callback</h2>
-<!-- ,
-attributeName: null, // 변경된 속성명
-attributeNamespace: null, // 변경된 속성네임스페이스
-nextSibling: null, // 다음 형제 태그
-previousSibling: null, // 이전 형제 태그
-oldValue: null, // 변경전 값
-removedNodes: [], // 제거된 자식 노드
-target: Element, // 대상 태그
-type: 'attributes' || 'childList' || 'characterData' // 어떤 종류가 변경되었는지 -->
+						<p>DOM 변경이 일어났을 때 처리할 콜백함수</p>
+
+<!-- attributeNamespace //변경된 속성의 네임스페이스
+nextSibling //제거된 노드 다음 노드
+previousSibling //제거된 노드 이전 노드 -->
 
 						<pre><code class="js">
 var callback = (mutations, observer) => {
 	mutations.forEach(mutation => {
-		var newValue, oldValue, language;
-		// type: 어떤 종류가 변경되었는지 확인
-		// addedNodes: 추가된 자식 노드
-		if (mutation.type === 'childList' && mutation.addedNodes.length) {
-			// target: 대상 태그
-			newValue = mutation.target.innerText;
-			oldValue = mutation.target.getAttribute('data-default-txt');
-
-			if (newValue !== oldValue) {
-				// 언어변경 callback
-			} else if (newValue == oldValue) {
-				// 한국어
-			}
-		}
+		console.log(mutation);
+		// mutation.type: 어떤 종류가 변경되었는지 확인 'attributes' || 'childList' || 'characterData'
+		// mutation.attributeName: 변경된 속성명
+		// mutation.addedNodes: 추가된 자식 노드
+		// mutation.removedNodes: 제거된 자식 노드
+		// mutation.oldValue: 속성 또는 데이터 이전 값
+		// mutation.target: 감시 대상 태그
 	});
 };
                         </code></pre>
@@ -238,7 +239,7 @@ var callback = (mutations, observer) => {
 
 					<section>
 						<h2>placeholder 번역 대응</h2>
-						<p>placeholder 값을 가져와 임시 dom 생성 후 옵저버로 감시<br>번역 완료 후, 변경된 언어로 placeholder 변경</p>
+						<p>placeholder 값을 DOM 생성 후 옵저버로 감시<br>번역 완료 후, 변경된 언어로 다시 placeholder 변경</p>
 
 						<pre><code class="js">
 $('[placeholder]:not(.translated)').each(function(){
@@ -291,7 +292,7 @@ mutation.target.prev('[placeholder].translated').get(0).placeholder = mutation.t
 						<ul>
 							<li>스크롤 이벤트는 동기적으로 실행되기 때문에 메인 스레드에 영향</li>
 							<li>스크롤할 때마다 이벤트가 끊임없이 호출</li>
-							<li>Debouncing, Throttling을 통해 이러한 문제 개선</li>
+							<li>이러한 문제를 Debouncing, Throttling을 통해 개선</li>
 						</ul>
 						<pre><code class="js">
 $(window).on('scroll', function() {
@@ -488,7 +489,7 @@ images.forEach((el) => {
 					</section>
 
 					<section>
-						<p>IntersectionObserver가 현재 브라우저에서 사용 가능한지 확인 후<br>그렇지 않으면 기본 동작 사용</p>
+						<p>IntersectionObserver가 현재 브라우저에서 사용 가능한지 확인<br>그렇지 않으면 기존 레이지 로딩 사용</p>
 						<pre><code class="js">
 if (!('IntersectionObserver' in window)) {
 	Array.from(images).forEach(image => preloadImage(image));
@@ -751,15 +752,10 @@ if (oInfinitePersist.get('') !== null) {
 
 					<section>
 						<h2>로딩 인디케이터</h2>
-
-						<p>웹페이지를 그리기 전, 서버를 거치는 과정에서 유저, 상품, 주문 정보 등<br>데이터를 DB 또는 외부 API 호출</p>
-						<p>웹브라우저는 데이터 로딩이 완료될 때까지 대기</p>
-
+						<!-- <p>웹페이지를 그리기 전, 서버를 거치는 과정에서 유저, 상품, 주문 정보 등<br>데이터를 DB 또는 외부 API 호출</p> -->
+						<p>웹 브라우저는 데이터 로딩이 완료될 때까지 대기<br>데이터 로딩 시간이 길어질수록 빈 화면이 노출되거나 현재 페이지에 멈춰있게 됨</p>
 						<!-- 따라서 데이터 로딩 시간이 길어질수록 빈 화면이 노출되거나 현재 페이지에 멈춰있게 됩니다. -->
-
-
-
-						<p>사용자에게 기다려 달라는 의미지만 텅빈 화면을 오래 봐야 하는 단점</p>
+						<!-- <p>사용자에게 기다려 달라는 의미지만 텅빈 화면을 오래 봐야 하는 단점</p> -->
 						<img src="img/ssg_loding.png" alt="" width="30%">
 					</section>
 
@@ -773,23 +769,29 @@ if (oInfinitePersist.get('') !== null) {
 
 					<section>
 						<p>YouTube, Facebook 화면 로드 상태</p>
-						<img src="img/youtebe.png" alt="" width="70%" style="margin:0">
-						<!-- <p>Facebook 뉴스피드 로드 상태</p> -->
-						<img src="img/facebook.png" alt="" width="70%" style="margin:0">
+						<img src="img/youtebe_facebook.png" alt="" width="65%" style="margin:0">
 					</section>
 
+
+					<section>
+						<iframe width="100%" height="500" src="https://jsfiddle.net/hohoya33/trgsmxbc/embedded/result,js,html,css/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+					</section>
 
 					<section>
 						<h2>데이터 지연 로딩</h2>
-						<p>가장 중요한 UI 영역을 먼저 제공하고,<br>중요도가 떨어지는 영역을 이후 제공해 체감 속도 향상</p>
-						<p>지연이 필요한 영역의 데이터 호출 로직을 서버 controller에서 제거<br>클라이언트 단에서 필요한 시점에 API를 호출하는 방식으로 전환</p>
-						<p>자연스러운 UX를 위해 지연되는 시간 동안 스켈레톤 스크린 적용</p>
+						<!-- 지연이 필요한 영역의 데이터 호출 로직을 서버 controller에서 제거<br> -->
+						<p>가장 중요한 UI 영역을 먼저 제공하고,<br>중요도가 떨어지는 영역을 이후 제공, 체감 속도 향상</p>
+						<!-- <p>클라이언트 단에서 필요한 시점에 API를 호출하는 방식</p> -->
+
+						<p>자연스러운 UX를 위해 데이터를 가져오는 시간 동안 스켈레톤 스크린 적용</p>
 					</section>
+
 
 					<section>
-
-						<iframe width="100%" height="500" src="https://jsfiddle.net/hohoya33/trgsmxbc/embedded/result,js,html,css/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+						<p>Intersection Observer + Skeleton Screen</p>
+						<iframe width="100%" height="500" src="https://jsfiddle.net/hohoya33/ts3oc01p/embedded/result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 					</section>
+
 				</section>
 
 
