@@ -69,7 +69,7 @@
 						<h2>setInterval API</h2>
 						<!-- <p>이전에는 객체의 속성 변경을 감지하거나 요소가 출력된 것을 감지 하는것은 꽤 어렵거나 비용이 많이 드는 일</p> -->
 						<!-- <p>setInterval 매 초마다 값을 모니터링하고 스타일을 변경 한 코드를 작성</p> -->
-						<p>setInterval을 사용하여 일정 시간마다 반복해서 변경사항이 있는지 확인</p>
+						<p>일정 시간마다 반복해서 변경사항이 있는지 확인</p>
 						<ul>
 							<li>정확한 지연시간을 보장해 주지 않음</li>
 							<li>여러 개의 타이머 사용 시 웹 사이트 성능 저하 원인</li>
@@ -98,7 +98,7 @@ var timeId = setInterval(function() {
 						<h2>JS Observers</h2>
 						<p>최신 브라우저에서 제공하는 옵저버 목록</p>
 						<ul>
-							<li>MutationObserver - 엘리먼트의 속성 변경 감시</li>
+							<li>MutationObserver - 엘리먼트의 변경 사항 감시</li>
 							<li>IntersectionObserver - 뷰포트와 대상 엘리먼트의 교차 감시</li>
 							<li>ResizeObserver - 엘리먼트의 너비, 높이 변화 감시</li>
 							<li>PerformanceObserver - 프로세스 성능 모니터링</li>
@@ -128,8 +128,9 @@ observer.observe(WHAT-TO-OBSERVE);
 						<h2>MutationObserver</h2>
 						<!-- <p>DOM의 변경 사항을 감지하기 위해 제공하는 웹 API</p> -->
 
-						<p>DOM 요소를 감지하면서 변경 사항이 있을 경우 콜백 실행</p>
-						<p>노드가 새로 추가되거나 제거, 속성, 텍스트 내용 변경을 모니터링</p>
+						<p>DOM 요소의 변경 사항을 감시하는 API<br>(노드가 새로 추가되거나 제거, 속성, 텍스트 내용)</p>
+
+
 
 						<!-- <ul>
 							<li>대상 요소의 속성 변화 감시</li>
@@ -149,41 +150,54 @@ observer.observe(WHAT-TO-OBSERVE);
 							<!-- <li>번역 시 자식노드에 font 태그 생성</li> -->
 						</ul>
 						<!-- 상태, 구글 웹 사이트 번역기 언어 변경  =>  DOM 변형 감지  => callback 함수 변경된 언어 전달 (새로고침) -->
-						<p>특정 엘리먼트를 감지하고 있다가 변경이 일어나면<br>이전 텍스트와 현재 텍스트 비교</p>
-						<p>이때 변경 감지를 위해 setInterval 대신 Mutation Observer API 사용</p>
+						<p>특정 엘리먼트를 감시하고 있다가 변경이 일어나면<br>이전 텍스트와 현재 텍스트 비교</p>
+						<p>이때 setInterval 대신 Mutation Observer API 사용</p>
 					</section>
+
 
 
 					<section>
 						<h2>사용 방법</h2>
-						<p>MutationObserver 인스턴스 생성</p>
+						<p>MutationObserver 인스턴스 생성, 변경사항이 발생할 때 마다 실행 될 콜백</p>
+						<ul>
+							<li>observe - 감시 시작 (감시할 DOM 노드, 설정)</li>
+							<li>disconnect - 변경 사항 감시 중지</li>
+							<li>takeRecords - 인스턴스를 비우고 MutationRecords 반환</li>
+						</ul>
 						<pre><code class="js">
-var observer = new MutationObserver(callback);
+var observer = new MutationObserver (mutations, observer) => {
+	mutations.forEach(mutation => {
+		// 변경된 내용 정보
+		console.log(mutation);
+	});
+});
                         </code></pre>
 					</section>
 
 
 					<section>
-						<h2>감시 하기</h2>
+						<h2>감시 시작</h2>
 						<p>감시할 DOM과 옵션들을 설정 후 옵저버에 전달</p>
 						<!-- 특정 노드에서 DOM 변경의 알림을 받을 수 있도록 MutationObserver 인스턴스를 등록.  -->
 						<pre><code class="js">
-// DOM 변경을 감시할 요소
-var target = document.getElementById('transObserver');
+// 감시할 대상
+var target = document.getElementById('some-element');
 
-// 감시자 설정
+// 감시할 옵션
 var config = {
-    childList: true, // 자식요소 font 태그 생성 감지
+	childList: true,
+	characterData: true
 };
 
-// 대상 요소, 설정 전달 모니터링 시작
+// 모니터링 시작
 observer.observe(target, config);
                         </code></pre>
 					</section>
 
 
 					<section>
-						<h2>감시자 설정</h2>
+						<h2>감시 옵션</h2>
+						 <!-- // 자식요소 font 태그 생성 감지 -->
 						<ul>
 							<li>childList: 대상 노드 자식 요소 (텍스트 포함)의 추가 및 제거</li>
 							<li>attributes: 대상 노드 속성 변경</li>
@@ -193,44 +207,45 @@ observer.observe(target, config);
 							<li>characterDataOldValue: 요소 내부 텍스트를 변경할 경우 이전 값</li>
 							<li>attributeFilter: 모든 속성을 관찰 할 필요가 없는 경우 속성명들을 배열 정의</li>
 						</ul>
-<!-- 						<pre><code class="js">
+						<pre><code class="js">
 var config = {
-	childList: 대상 노드의 자식 요소 (텍스트 포함)의 추가 및 제거 관찰
-	attributes: 대상 노드의 속성 변경 감시
-	characterData: 대상 노드의 텍스트 값에 대한 변경 사항 모니터링
-	subtree: 대상 노드 및 대상요소의 자식 자손까지 모두 감시 (childList, attributes 또는 characterData도 true 이어야 함)
-	attributeOldValue: 속성 값이 변경 전의 값 (attributes을 true 설정)
-	characterDataOldValue: 요소 내부 텍스트를 변경할 경우 이전 값 (characterData가 true 설정)
-	attributeFilter: 모든 속성을 관찰할 필요가없는 경우 속성명들을 배열 형태로 정의 예를 들어 ['value']일 경우 해당 요소의 value 값만 바뀔 경우 이벤트 발생
+	childList: true,
+	characterData: true
 };
-                        </code></pre> -->
+                        </code></pre>
 					</section>
 
 
 					<section>
-						<h2>callback</h2>
 						<p>DOM 변경이 일어났을 때 처리할 콜백함수</p>
 
-<!-- attributeNamespace //변경된 속성의 네임스페이스
-nextSibling //제거된 노드 다음 노드
-previousSibling //제거된 노드 이전 노드 -->
-
 						<pre><code class="js">
-var callback = (mutations, observer) => {
+var observer = new MutationObserver (mutations, observer) => {
 	mutations.forEach(mutation => {
 		console.log(mutation);
-		// mutation.type: 어떤 종류가 변경되었는지 확인 'attributes' || 'childList' || 'characterData'
-		// mutation.attributeName: 변경된 속성명
-		// mutation.addedNodes: 추가된 자식 노드
-		// mutation.removedNodes: 제거된 자식 노드
-		// mutation.oldValue: 속성 또는 데이터 이전 값
-		// mutation.target: 감시 대상 태그
+		// type: 어떤 종류가 변경되었는지 확인 'attributes' || 'childList' || 'characterData'
+		// attributeName: 변경된 속성명
+		// attributeNamespace: 속성 네임스페이스
+		// addedNodes: 추가된 노드
+		// removedNodes: 제거된 노드
+		// nextSibling: DOM의 다음 형제
+		// previousSibling: DOM의 이전 형제
+		// oldValue: 속성 또는 데이터 이전 값
+		// target: 감시 대상 태그
 	});
 };
                         </code></pre>
 					</section>
 
 
+					<section>
+						<h2>감시 중지</h2>
+						<p>작업이 끝난 후 DOM 감시를 중단하기 위해 사용</p>
+						<pre><code class="js">
+// 변경 사항 감시 중지
+observer.disconnect();
+                        </code></pre>
+					</section>
 
 					<section>
 						<iframe width="100%" height="500" src="https://jsfiddle.net/hohoya33/6prg1kh5/85/embedded/result,js/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
@@ -239,9 +254,9 @@ var callback = (mutations, observer) => {
 
 					<section>
 						<h2>placeholder 번역 대응</h2>
-						<p>placeholder 값을 DOM 생성 후 옵저버로 감시<br>번역 완료 후, 변경된 언어로 다시 placeholder 변경</p>
+						<p>기존 placeholder 값을 임시 DOM 안에 넣은 후 옵저버로 감시<br>번역이 완료 되면, 변역된 언어로 다시 placeholder 속성값 변경</p>
 
-						<pre><code class="js">
+<!-- 						<pre><code class="js">
 $('[placeholder]:not(.translated)').each(function(){
 	var welTarget = $(this);
 	var sText = welTarget.attr('placeholder');
@@ -252,7 +267,7 @@ $('[placeholder]:not(.translated)').each(function(){
 
 // observer callback
 mutation.target.prev('[placeholder].translated').get(0).placeholder = mutation.target.innerText;
-                        </code></pre>
+                        </code></pre> -->
 					</section>
 
 
