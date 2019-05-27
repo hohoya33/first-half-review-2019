@@ -76,22 +76,19 @@
 							<li>메모리 절약을 위해 더 이상 필요하지 않을 때 취소시키는 것이 중요</li>
 						</ul>
 
-
 						<!-- 일반적으로 setInterval은 지정한 시간을 무한 루프 돌리게 된다
 						잘못쓰게 되면 무한 루프들이 중복되어 사이트가 느려지는 병목현상이 발생
 						이런걸 방지 하기 위해서는 정확하게 한 변수에 setInterval을 정의 하고 이 변수를 clearInterval
 						해줘야된다 -->
 
-
 						<pre><code class="js">
 var timeId = setInterval(function() {
- //...
+	//...
 }, 5000); // 5초 마다 실행
 
-// clearInterval(timeId);
+clearInterval(timeId);
                         </code></pre>
 					</section>
-
 
 
 					<section>
@@ -101,17 +98,19 @@ var timeId = setInterval(function() {
 							<li>MutationObserver - 엘리먼트의 변경 사항 감시</li>
 							<li>IntersectionObserver - 뷰포트와 대상 엘리먼트의 교차 감시</li>
 							<li>ResizeObserver - 엘리먼트의 너비, 높이 변화 감시</li>
-							<li>PerformanceObserver - 프로세스 성능 모니터링</li>
-							<li>ReportingObserver - 웹 사이트의 표준 및 정책 준수 현황 감시</li>
+							<li>PerformanceObserver - 웹 성능 측정 데이터를 효율적으로 액세스</li>
+							<li>ReportingObserver - 웹 사이트의 잠재적 문제를 발견하고 모니터링</li>
+						</ul>
 						</ul>
 					</section>
 
-					<!--
+<!--
 					<section>
-						<h2>Observers 기본 구조</h2>
+						<h2>Observers 코드 구조</h2>
 
 						<pre><code class="js">
-let observer = new YOUR-TYPE-OF-OBSERVER(function (entries) {
+//객체를 인스턴스화 하고 객체 생성자에 이벤트 핸들러 함수를 전달
+var observer = new YOUR-TYPE-OF-OBSERVER(function (entries) {
   // entries: 관찰되는 엘리먼트들의 배열
   entries.forEach(entry => {
       // 각 특정 엔트리를 사용하는 코드 작성
@@ -122,22 +121,11 @@ let observer = new YOUR-TYPE-OF-OBSERVER(function (entries) {
 observer.observe(WHAT-TO-OBSERVE);
                         </code></pre>
 					</section>
- 					-->
+ -->
 
 					<section>
 						<h2>MutationObserver</h2>
-						<!-- <p>DOM의 변경 사항을 감지하기 위해 제공하는 웹 API</p> -->
-
-						<p>DOM 요소의 변경 사항을 감시하는 API<br>(노드가 새로 추가되거나 제거, 속성, 텍스트 내용)</p>
-
-
-
-						<!-- <ul>
-							<li>대상 요소의 속성 변화 감시</li>
-							<li>대상 요소의 텍스트 노드 변화 감시</li>
-							<li>대상 요소의 자식 노드 변화 감시</li>
-							<li>대상 요소의 하위 노드도 감시 대상에 포함</li>
-						</ul> -->
+						<p>DOM 요소의 변경 사항을 감시하는 API<br>노드가 새로 추가되거나 제거, 속성, 텍스트 내용</p>
 					</section>
 
 
@@ -155,14 +143,13 @@ observer.observe(WHAT-TO-OBSERVE);
 					</section>
 
 
-
 					<section>
 						<h2>사용 방법</h2>
-						<p>MutationObserver 인스턴스 생성, 변경사항이 발생할 때 마다 실행 될 콜백</p>
+						<p>MutationObserver 인스턴스 생성<br>변경사항이 발생할 때 마다 실행 될 콜백함수 전달</p>
 						<ul>
 							<li>observe - 감시 시작 (감시할 DOM 노드, 설정)</li>
 							<li>disconnect - 변경 사항 감시 중지</li>
-							<li>takeRecords - 인스턴스를 비우고 MutationRecords 반환</li>
+							<li>takeRecords - 콜백으로 처리되기 전에 DOM 변경 사항 반환</li>
 						</ul>
 						<pre><code class="js">
 var observer = new MutationObserver (mutations, observer) => {
@@ -177,10 +164,9 @@ var observer = new MutationObserver (mutations, observer) => {
 
 					<section>
 						<h2>감시 시작</h2>
-						<p>감시할 DOM과 옵션들을 설정 후 옵저버에 전달</p>
-						<!-- 특정 노드에서 DOM 변경의 알림을 받을 수 있도록 MutationObserver 인스턴스를 등록.  -->
+						<p>감시할 대상과 옵션들을 설정 후 옵저버에 전달</p>
 						<pre><code class="js">
-// 감시할 대상
+// 감시할 대상 선택
 var target = document.getElementById('some-element');
 
 // 감시할 옵션
@@ -189,7 +175,7 @@ var config = {
 	characterData: true
 };
 
-// 모니터링 시작
+// 모니터링 시작 (감시 대상과 옵션 전달)
 observer.observe(target, config);
                         </code></pre>
 					</section>
@@ -197,7 +183,22 @@ observer.observe(target, config);
 
 					<section>
 						<h2>감시 옵션</h2>
-						 <!-- // 자식요소 font 태그 생성 감지 -->
+						<p>어떤 내용을 감시할 지에 대한 설정</p>
+						<p>childList, attributes, characterData 중 하나 true <br>그렇지 않으면 TypeError 발생</p>
+						<pre><code class="js">
+var config = {
+	childList: true,
+	attributes: true,
+	characterData: false,
+	subtree: false,
+	attributeFilter: ['class', 'hidden'],
+	attributeOldValue: false,
+	characterDataOldValue: false
+};
+                        </code></pre>
+					</section>
+
+					<section>
 						<ul>
 							<li>childList: 대상 노드 자식 요소 (텍스트 포함)의 추가 및 제거</li>
 							<li>attributes: 대상 노드 속성 변경</li>
@@ -205,19 +206,14 @@ observer.observe(target, config);
 							<li>subtree: 대상 노드 자식 자손까지 모두 감시</li>
 							<li>attributeOldValue: 속성 값이 변경 전의 값</li>
 							<li>characterDataOldValue: 요소 내부 텍스트를 변경할 경우 이전 값</li>
-							<li>attributeFilter: 모든 속성을 관찰 할 필요가 없는 경우 속성명들을 배열 정의</li>
+							<li>attributeFilter: 모든 속성을 관찰 할 필요가 없는 경우 속성명들을 정의</li>
 						</ul>
-						<pre><code class="js">
-var config = {
-	childList: true,
-	characterData: true
-};
-                        </code></pre>
 					</section>
 
 
 					<section>
-						<p>DOM 변경이 일어났을 때 처리할 콜백함수</p>
+						<h2>콜백 함수</h2>
+						<p>DOM 변경사항 발생 시 처리할 작업</p>
 
 						<pre><code class="js">
 var observer = new MutationObserver (mutations, observer) => {
@@ -236,6 +232,12 @@ var observer = new MutationObserver (mutations, observer) => {
 };
                         </code></pre>
 					</section>
+
+<!--
+					<section>
+						<h2>childList</h2>
+						<p>자식 요소에 대한 변경 사항 감시</p>
+					</section> -->
 
 
 					<section>
@@ -285,10 +287,11 @@ mutation.target.prev('[placeholder].translated').get(0).placeholder = mutation.t
 					</section>
 
 					<section>
-						<h2>Intersection Observer</h2>
-						<!-- <p>타겟 엘리먼트와 뷰포트가<br>교차하는 부분의 변화를 비동기적으로 관찰하는 API</p> -->
-						<p>Intersection Observe를 이용한 요소 확인 최적화</p>
-						<p>무한 스크롤 이미지 레이지 로딩 시 IntersectionObserver API 사용</p>
+						<h2>IntersectionObserver</h2>
+
+
+						<p>뷰포트와 DOM 요소 간의<br>교차하는 부분의 변화를 비동기적으로 감시하는 API</p>
+						<p>무한스크롤 이미지 레이지 로딩 시 IntersectionObserver를 이용한 최적화 작업</p>
 					</section>
 
 
@@ -348,6 +351,7 @@ function isElementInViewport (el) {
 					</section>
 
 					<section>
+						<h2>IntersectionObserver</h2>
 						<!-- 대상으로 정한 UI가 특정 영역에 진입하는 시점에 이벤트를 발생하는 역할 -->
 						<!-- <p>웹이 발전함에 따라 이러한 변화를 체크하는 것의 필요성이 높아졌고 그래서 나오게 된 API이다.</p> -->
 
@@ -368,20 +372,35 @@ function isElementInViewport (el) {
 						이렇게하면 더 효율적이고 성능이 뛰어난 응용 프로그램을 개발 -->
 					</section>
 
+
+
 					<section>
 						<h2>사용 방법</h2>
-						<p>기본구조는 콜백함수와 옵션</p>
+						<p>IntersectionObserver 인스턴스 생성<br>화면에 교차할 때 실행 될 콜백함수, 옵션 전달</p>
+
 						<pre><code class="js">
-const options = {
+var options = {
 	root: null,
 	rootMargin: '0px 0px 0px 0px',
 	threshold: 0
 };
 
-const observer = new IntersectionObserver(callback, options);
+var observer = new IntersectionObserver(callback, options);
                         </code></pre>
 					</section>
 
+
+					<section>
+						<h2>감시 옵션</h2>
+						<p>교차 지점 설정</p>
+						<pre><code class="js">
+var options = {
+	root: null,
+	rootMargin: '0px 0px 0px 0px',
+	threshold: 0
+};
+                        </code></pre>
+					</section>
 
 					<section>
 						<h2>root</h2>
@@ -389,44 +408,74 @@ const observer = new IntersectionObserver(callback, options);
 							<li>교차 영역의 기준이 될 root 엘리먼트</li>
 							<li>이 속성을 정의하지 않으면 자동으로 브라우저 뷰포트가 사용</li>
 						</ul>
-						<img src="img/root.png" alt="" width="80%">
+						<img src="img/root.png" alt="" width="90%">
 					</section>
 
 
 					<section>
 						<h2>rootMargin</h2>
 						<ul>
-							<li>root 엘리먼트의 마진값. 이 값에 따라 교차 영역이 확장 또는 축소</li>
-							<li>css에서 margin을 사용하는 방법으로 선언, 축약 가능, px과 %로 표현</li>
+							<li>root 엘리먼트의 마진값</li>
+							<li>교차 영역을 확장 또는 축소</li>
+							<li>css margin을 사용하는 방법으로 선언, 축약 가능, px과 %로 표현</li>
 						</ul>
-						<img src="img/rootMargin.png" alt="" width="80%">
+						<img src="img/rootMargin.png" alt="" width="90%">
 					</section>
 
 					<section>
 						<h2>threshold</h2>
-						<p>이벤트 발생 빈도를 늘리려면 threshold 옵션을 사용</p>
 						<!-- <p>intersectionRatio에 의해 교차하는 영역의 비율을 얻을 수 있지만 콜백이 불리는 타이밍이 교차 타이밍뿐만은 0%와 100% 등별로 쓸모없는 값 밖에 나오지 않는다. 이 표시가 0(표시되지 않은) 100(모두 표시되는) 중 하나 밖에 없기 때문</p> -->
 
 						<ul>
-							<li>0.0부터 1.0 사이의 숫자 혹은 이 숫자들로 이루어진 배열</li>
+							<li>callback 이벤트 발생 빈도 조정</li>
+							<li>0.0 부터 1.0 사이의 숫자, 이 숫자들로 이루어진 배열</li>
 							<!-- <li>callback을 실행시킬 지점</li> -->
-							<li>1.0이면 root요소 내부에 100% callback</li>
-							<li>0.5이면 root요소 내부에 50%일 때 callback</li>
+							<li>0.5 : 타겟이 root요소 내부에 50% 일 때 callback</li>
+							<li>1.0 : 타겟이 root요소 내부에 100% 일 때 callback</li>
 						</ul>
 
-						<p>다음과 같이 인수를 설정하면 교차 영역이 20% 변할 때마다 callback<br>threshold: [0, 0.2, 0.4, 0.6, 0.8, 1.0]</p>
-						<img src="img/threshold.png" alt="" width="80%">
+						<p>ex) 교차 영역이 20% 변할 때마다 callback<br>threshold: [0, 0.2, 0.4, 0.6, 0.8, 1.0]</p>
+						<img src="img/threshold.png" alt="" width="90%">
 					</section>
 
+				<section>
+						<h2>감시 시작</h2>
+						<p>일단 관찰자가 만들어지면<br>옵저버가 감시 할 수 있도록 해당 요소 전달</p>
+						<pre><code class="js">
+// 대상 요소는 root 요소의 자식이어야 됨
+var target = document.querySelector('#item');
+observer.observe(target);
 
+
+// 여러 대상을 추적해야하는 경우 각 대상을 개별적으로 추가
+var images = document.querySelectorAll('.lazy');
+images.forEach((el) => {
+  observer.observe(el);
+});
+                        </code></pre>
+					</section>
 
 					<section>
-						<h2>callback</h2>
-						<p>타겟 엘리먼트가 화면에 들어오거나 벗어날 때 실행 함수</p>
+						<h2>Methods</h2>
+						<dl>
+							<dt>observer.observe(targetElement)</dt>
+							<dd>타겟 엘리먼트에 대한 IntersectionObserver 등록 (감시 시작)</dd>
+							<dt style="margin-top: 20px">observer.unobserve(targetElement)</dt>
+							<dd>하나의 대상 요소 감시을 중지하도록 지시</dd>
+							<dt style="margin-top: 20px">observer.disconnect()</dt>
+							<dd>다수의 엘리먼트를 감시하고 있을 때, 모든 관측을 중지하도록 지시</dd>
+							<dt style="margin-top: 20px">observer.takerecords()</dt>
+							<dd>교차하는지 여부에 관계없이 모든 감시 대상 목록을 반환</dd>
+						</dl>
+					</section>
+
+					<section>
+						<h2>콜백 함수</h2>
+						<p>타겟 엘리먼트가 화면에 들어오거나 벗어날 때 처리할 작업</p>
 
 						<pre><code class="js">
 
-const callback = (entries, observer) => {
+var callback = (entries, observer) => {
 	entries.forEach(entry => {
 		// entry는 감지된 엘레멘트의 정보
 		if (entry.isIntersecting && entry.intersectionRatio == 1 ) {
@@ -461,37 +510,7 @@ const callback = (entries, observer) => {
 						<img src="img/callback.png" alt="" width="50%" style="vertical-align:top">
 					</section>
 
-					<section>
-						<h2>대상 추가</h2>
-						<p>일단 관찰자가 만들어지면<br>옵저버가 감시 할 수 있도록 목표 요소를 전달</p>
-						<pre><code class="js">
-// 대상 요소는 root 요소의 자식이어야 됨
-// Single element
-const target = document.querySelector('#item');
-observer.observe(target);
 
-// 여러 대상을 추적해야하는 경우 각 대상을 개별적으로 추가
-// Multiple elements
-const images = document.querySelectorAll('.lazy');
-images.forEach((el) => {
-  observer.observe(el);
-});
-                        </code></pre>
-					</section>
-
-					<section>
-						<h2>Methods</h2>
-						<dl>
-							<dt>observer.observe(targetElement)</dt>
-							<dd>타겟 엘리먼트에 대한 IntersectionObserver 등록 (감시 시작)</dd>
-							<dt style="margin-top: 20px">observer.unobserve(targetElement)</dt>
-							<dd>하나의 대상 요소 감시을 중지하도록 지시</dd>
-							<dt style="margin-top: 20px">observer.disconnect()</dt>
-							<dd>다수의 엘리먼트를 감시하고 있을 때, 모든 관측을 중지하도록 지시</dd>
-							<dt style="margin-top: 20px">observer.takerecords()</dt>
-							<dd>교차하는지 여부에 관계없이 모든 감시 대상 목록을 반환</dd>
-						</dl>
-					</section>
 
 
 					<section>
