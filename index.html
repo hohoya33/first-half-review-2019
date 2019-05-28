@@ -41,8 +41,8 @@
 					<h2>The Agenda</h2>
 					<ul>
 						<li>Observer API</li>
-						<li>무한 스크롤 (InfiniteGrid, Persist)</li>
-						<li>스켈레톤 스크린 (Skeleton Screen)</li>
+						<li>무한 스크롤</li>
+						<li>스켈레톤 스크린</li>
 					</ul>
 				</section>
 
@@ -54,9 +54,14 @@
 
 
 					<section>
+						<h2>Observer? 관찰자?</h2>
+					</section>
+
+
+					<section>
 						<h2>옵저버 패턴</h2>
-						<p>한 객체의 상태가 바뀌면 그 객체에 의존하는 다른 객체들에게<br>그 정보를 알려주는 디자인 패턴 (일대다 의존성)</p>
-						<p>엑셀 표 - 사용자가 스프레드시트 값 변경 → 표, 그래프, 차트 변화<br>이때 모든 요소들이 동시에 즉각적으로 반응</p>
+						<p>한 객체의 상태가 바뀌면 다른 객체들에게<br>알려주고 자동으로 내용이 갱신되는 방식</p>
+						<p>ex. 엑셀 표) 사용자가 스프레드시트 값 변경 → 표, 그래프, 차트 변화<br>이때 모든 요소들이 동시에 즉각적으로 반응</p>
 						<div style="width:42%;margin:0 auto;padding:10px 10px 0px;background:#fff"><img src="img/observer.png" alt=""></div>
 
 						<!-- 모든 객체들의 신속한 동기화를 위해서는 데이터를 보유한 주체(Subject)를 여러 객체들이 감시(Observe)하는 방식이 가장 효과적 -->
@@ -64,6 +69,12 @@
 						<!-- 보다 간단하게 옵저버 패턴을 사용할 수 있는 방법은 없을까요?
 						강력한 기능이 탑재된 것은 아니지만 이미 자바스크립트가 자체적으로 보유하고 있는 쏠쏠한 옵저버들이 여럿 있습니다. -->
 					</section>
+
+					<section>
+						<h2>옵저버</h2>
+						<p>페이지에서 발생하는 어떤 일들을 감시</p>
+					</section>
+
 
 					<section>
 						<h2>setInterval API</h2>
@@ -90,17 +101,24 @@ clearInterval(timeId);
                         </code></pre>
 					</section>
 
+					<section>
+						<p>보다 간단하게 옵저버 패턴을 사용할 수 있는 방법은 없을까?</p>
+					</section>
+
 
 					<section>
 						<h2>JS Observers</h2>
-						<p>최신 브라우저에서 제공하는 옵저버 목록</p>
+						<!-- <p>최신 브라우저에서 제공하는 옵저버 목록</p> -->
+						<h4>DOM 정보를 관찰 할 수 있는 옵저버</h4>
 						<ul>
 							<li>MutationObserver - 엘리먼트의 변경 사항 감시</li>
 							<li>IntersectionObserver - 뷰포트와 대상 엘리먼트의 교차 감시</li>
 							<li>ResizeObserver - 엘리먼트의 너비, 높이 변화 감시</li>
-							<li>PerformanceObserver - 웹 성능 측정 데이터를 효율적으로 액세스</li>
-							<li>ReportingObserver - 웹 사이트의 잠재적 문제를 발견하고 모니터링</li>
 						</ul>
+						<h4 style="margin-top: 40px">성능 측정, 코드 상태를 파악하기 위한 옵저버</h4>
+						<ul>
+							<li>PerformanceObserver - 웹 성능 측정 데이터를 효율적으로 액세스</li>
+							<li>ReportingObserver - 웹 사이트의 잠재적인 문제를 발견하면 리포팅</li>
 						</ul>
 					</section>
 
@@ -125,7 +143,7 @@ observer.observe(WHAT-TO-OBSERVE);
 
 					<section>
 						<h2>MutationObserver</h2>
-						<p>DOM 요소의 변경 사항을 감시하는 API<br>노드가 새로 추가되거나 제거, 속성, 텍스트 내용</p>
+						<p>DOM 요소의 변경 사항을 감시하는 API<br>(노드가 새로 추가되거나 제거, 속성, 텍스트 내용)</p>
 					</section>
 
 
@@ -134,11 +152,11 @@ observer.observe(WHAT-TO-OBSERVE);
 						<ul>
 							<li>구글 웹 사이트 번역기 사용</li>
 							<li>개발 시 필요한 API 지원이 안되는 문제</li>
-							<li>언어 변경 후, 변역이 완료되면 i18n 다국어 처리 및<br>페이지 새로고침을 위한 callback 함수 필요</li>
+							<li>언어 변경 후, 변역이 완료되면<br>다국어 처리(i18n), 페이지 새로고침을 위한 callback 함수 필요</li>
 							<!-- <li>번역 시 자식노드에 font 태그 생성</li> -->
 						</ul>
 						<!-- 상태, 구글 웹 사이트 번역기 언어 변경  =>  DOM 변형 감지  => callback 함수 변경된 언어 전달 (새로고침) -->
-						<p>특정 엘리먼트를 감시하고 있다가 변경이 일어나면<br>이전 텍스트와 현재 텍스트 비교</p>
+						<p>특정 엘리먼트를 감시하고 있다가 변경 사항이 있으면<br>이전 텍스트와 현재 텍스트 비교</p>
 						<p>언어 변경 체크를 위해 setInterval 대신 Mutation Observer API 사용</p>
 					</section>
 
@@ -288,22 +306,21 @@ mutation.target.prev('[placeholder].translated').get(0).placeholder = mutation.t
 
 					<section>
 						<h2>IntersectionObserver</h2>
-
-
 						<p>뷰포트와 DOM 요소 간의<br>교차하는 부분의 변화를 비동기적으로 감시하는 API</p>
-						<p>무한스크롤 이미지 레이지 로딩 시 IntersectionObserver를 이용한 최적화 작업</p>
+						<p>무한 스크롤 이미지 레이지 로딩 시<br>Scroll Event 대신 IntersectionObserver API를 사용해 최적화</p>
+
 					</section>
 
 
 					<section>
-						<p>특정 요소가 뷰포트 안에 있는지 확인 (scroll)</p>
+						<p>특정 요소가 뷰포트 안에 있는지 확인 - Scroll Event</p>
 						<iframe width="100%" height="500" src="https://jsfiddle.net/hohoya33/qcdj04sr/embedded/result,js/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 					</section>
 
 
 
 					<section>
-						<h2>scroll 이벤트</h2>
+						<h2>Scroll Event</h2>
 
 						<ul>
 							<li>스크롤 이벤트는 동기적으로 실행 (메인 스레드에 영향)</li>
@@ -312,25 +329,31 @@ mutation.target.prev('[placeholder].translated').get(0).placeholder = mutation.t
 						</ul>
 						<pre><code class="js">
 $(window).on('scroll', function() {
-  //1. 각 이미지가 뷰포트에 존재하는지 확인
-  //2. 이미지 로드
+  // 1. 각 이미지가 현재 뷰포트에 존재하는지 확인 후
+  // 2. 이미지 로드
 });
                         </code></pre>
 					</section>
 
 
 					<section>
-						<h2>debounce, throttle</h2>
-						<p>스크롤 이벤트 함수 호출 빈도 조정</p>
+						<p>Debouncing, Throttling<br>스크롤 이벤트 함수 호출 빈도 조정</p>
 						<iframe width="100%" height="500" src="https://jsfiddle.net/hohoya33/m3p2t4ky/embedded/result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 					</section>
 
 
 					<section>
 						<!-- <h2>뷰포트 안에 존재하는지 확인</h2> -->
-						<p>요소가 스크롤에 따라 뷰포트에 들어왔는지 수동으로 계산</p>
-						<p>getBoundingClientRect() 함수를 사용<br>이 함수는 리플로우, 레이아웃 현상이 발생한다는 단점</p>
+						<!-- 스크롤 시 현재 화면에 들어오는 요소마다 위치 체크를 수동으로 계산 -->
+						<p>스크롤 시 해당 요소가 화면에 들어왔는지<br>위치 확인을 위해 수동으로 계산</p>
+						<img src="img/scroll_visible.png" alt="" width="45%">
+					</section>
 
+					<section>
+						<p>getBoundingClientRect() 함수를 사용<br>이 함수는 리플로우(레이아웃) 현상이 발생한다는 단점</p>
+						<p>리플로우: 노드의 크기, 위치가 변경되어<br>현재 레이아웃의 일부 또는 전체를 다시 계산하는 과정</p>
+
+						<!-- <p>Reflow: DOM 노드의 레이아웃 수치(너비, 높이, 위치 등) 변경 시 영향 받은 모든 노드의(자신, 자식, 부모, 조상) 수치를 다시 계산(Recalculate)<br>렌더 트리를 재 생성 하는 과정</p> -->
 						<pre><code class="js">
 function isElementInViewport (el) {
   var rect = el.getBoundingClientRect();
@@ -344,9 +367,8 @@ function isElementInViewport (el) {
                         </code></pre>
 					</section>
 
-
 					<section>
-						<p>스크롤 시 화면에 들어오는 요소마다 위치를 체크해주는 계산을 해야 하며,<br>이러한 모든 배치 관련 계산이 메인 쓰레드에서 수행</p>
+						<p>이러한 모든 배치 관련 계산이 메인 쓰레드에서 수행</p>
 						<img src="img/scroll_inview.png" alt="" width="80%">
 					</section>
 
@@ -356,7 +378,7 @@ function isElementInViewport (el) {
 						<!-- <p>웹이 발전함에 따라 이러한 변화를 체크하는 것의 필요성이 높아졌고 그래서 나오게 된 API이다.</p> -->
 
 						<p>scroll 이벤트는 여러 브라우저에서 가장 호환성이 좋긴 하지만,</p>
-						<p>최신 브라우저는 요소 확인 작업을 Intersection Observer API를 통해<br>더 뛰어난 성능과 효율적인 방식 제공</p>
+						<p>최신 브라우저는 요소 확인을 IntersectionObserver를 통해<br>더 뛰어난 성능과 효율적인 방식 제공</p>
 
 						<ul>
 							<li>대상 요소 위치를 지속적으로 계산할 필요 없음</li>
@@ -440,7 +462,7 @@ var options = {
 
 				<section>
 						<h2>감시 시작</h2>
-						<p>일단 관찰자가 만들어지면<br>옵저버가 감시 할 수 있도록 해당 요소 전달</p>
+						<p>옵저버가 감시 할 수 있도록 해당 요소 전달</p>
 						<pre><code class="js">
 // 대상 요소는 root 요소의 자식이어야 됨
 var target = document.querySelector('#item');
@@ -471,7 +493,7 @@ images.forEach((el) => {
 
 					<section>
 						<h2>콜백 함수</h2>
-						<p>타겟 엘리먼트가 화면에 들어오거나 벗어날 때 처리할 작업</p>
+						<p>해당 요소가 화면에 들어오거나 벗어날 때 처리할 작업</p>
 
 						<pre><code class="js">
 
@@ -519,9 +541,9 @@ var callback = (entries, observer) => {
 
 
 					<section>
-						<p>비동기적으로 실행, 메인 스레드에 영향을 주지 않으면서 변경 사항 감시</p>
-						<p>getBoundingClientRect()를 호출한 것과 같은 결과</p>
-						<!-- <p>getBoundingClientRect() 함수를 호출할 필요가 없어 리플로우 현상을 방지</p> -->
+						<p>비동기적으로 실행, 메인 스레드에 영향을 주지 않으면서 요소 확인</p>
+						<!-- <p>getBoundingClientRect()를 호출한 것과 같은 결과</p> -->
+						<p>getBoundingClientRect()를 호출 할 필요 없어 리플로우 현상 방지</p>
 
 						<img src="img/observer_inview.png" alt="" width="80%">
 					</section>
@@ -533,9 +555,9 @@ var callback = (entries, observer) => {
 
 						<iframe src="https://caniuse.bitsofco.de/embed/index.html?feat=intersectionobserver&amp;periods=future_1,current,past_1,past_2" frameborder="0" width="100%" height="500px"></iframe>
 					</section>
-					<!--
+
 					<section>
-						<p>IntersectionObserver가 현재 브라우저에서 사용 가능한지 확인<br>그렇지 않으면 기존 레이지 로딩 사용</p>
+						<p>IntersectionObserver가 현재 브라우저에서 사용 가능한지 확인<br>그렇지 않으면 기존 방식 레이지 로딩으로 처리</p>
 						<pre><code class="js">
 if (!('IntersectionObserver' in window)) {
 	Array.from(images).forEach(image => preloadImage(image));
@@ -547,7 +569,6 @@ if (!('IntersectionObserver' in window)) {
 }
                         </code></pre>
 					</section>
-					 -->
 
 
 
@@ -691,7 +712,6 @@ if (!('IntersectionObserver' in window)) {
 						<h2>이미지 로딩 이슈</h2>
 						<p>데이터 요청 시점에 80개의 상품 이미지들 한번에 불러온다는 것</p>
 						<p>페이지를 그려낸 뒤에도 연속적으로 네트워크 호출이 발생<br>로딩된 이미지가 배치되면서 리플로우(레이아웃) 발생</p>
-						<p>리플로우: 노드의 크기, 위치가 변경되어<br>현재 레이아웃의 일부 또는 전체를 다시 계산하는 과정</p>
 						<!-- <p>이미지가 필요한 순간에 불러오도록 개선</p> -->
 						<!-- 이미지 로딩 시간 및 상품 이미지들이 추가되기 까지 시간이 올래 걸림 -->
 						<!--
@@ -836,7 +856,7 @@ if (oInfinitePersist.get('') !== null) {
 
 
 					<section>
-						<p>Intersection Observer + Skeleton Screen</p>
+						<p>IntersectionObserver + Skeleton Screen</p>
 						<iframe width="100%" height="500" src="https://jsfiddle.net/hohoya33/ts3oc01p/embedded/result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 					</section>
 
