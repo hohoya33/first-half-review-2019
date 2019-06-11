@@ -32,7 +32,7 @@
 			<div class="slides">
 				<section>
 					<h1 style="margin-bottom:100px;font-size:50px;letter-spacing:normal">상반기 리뷰</h1>
-					<p>2019. 6. 11</p>
+					<p>2019. 6. 13</p>
 					<p>서비스 개발1팀 UI파트 - 김재호</p>
 				</section>
 
@@ -912,10 +912,9 @@ if ('ResizeObserver' in window) {
 						<h2>기능 정의</h2>
 						<img src="img/dom_recyle.png" alt="" width="60%">
 						<ul>
-							<li>DOM이 계속 쌓이는 형태 → 화면에 보이는 DOM만 유지 (화면 밖의 요소 제거)</li>
-							<li>일정한 개수의 DOM만 유지. 성능향상 기대</li>
-							<!-- <li>화면 아래 도달하면 다음 데이터를 append 하는 방식</li> -->
-							<li>위(prepend), 아래 (append) 모두 데이터를 불러 올 수 있는 UI 인터렉션</li>
+							<li>DOM이 계속 쌓이는 형태 → 화면에 보이는 DOM만 유지</li>
+							<li>일정한 DOM의 수를 유지함으로써 성능향상 기대</li>
+							<li>위(prepend), 아래(append) 모두 데이터를 불러 올 수 있는 UI인터렉션</li>
 							<li>상품 클릭 페이지 이동 시 현재 데이터 기억</li>
 							<li>뒤로가기(히스토리백) 시 이전 데이터 상태 유지</li>
 						</ul>
