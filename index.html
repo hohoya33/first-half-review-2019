@@ -143,12 +143,12 @@ observer.observe(WHAT-TO-OBSERVE);
 
 					<section>
 						<h2>MutationObserver</h2>
-						<p>DOM 요소의 변경 사항을 감시하는 API<br>(노드가 새로 추가되거나 제거, 속성, 텍스트 내용 등)</p>
+						<p>노드가 새로 추가되거나 제거, 속성, 텍스트 내용 등<br>DOM 요소의 변경 사항을 감시하는 API</p>
 					</section>
 
 					<section>
 						<h2>이전의 MutationEvents</h2>
-						<p>일부 브라우저는 여전히 지원하지만<br>성능 저하 및 안정성 문제로 DOM 이벤트 표준에서 지원 중단</p>
+						<p>성능 저하 및 안정성 문제로 DOM 이벤트 표준에서 지원 중단<br>일부 브라우저는 여전히 지원</p>
 						<ul>
 							<li>DOMAttrModified</li>
 							<li>DOMAttributeNameChanged</li>
@@ -169,7 +169,7 @@ observer.observe(WHAT-TO-OBSERVE);
 							<li>DOM 변경이 완료 될 때까지 콜백함수가 작동하지 않음</li>
 							<li>scroll, resize 비용이 큰 EventListener 대체</li>
 							<li>어떤 옵저버는 사전 계산된 속성을 제공 (직접 계산 불필요)</li>
-							<li>옵저버들의 구조적 패턴을 따르므로 다른 옵저버의 작업 방식에 익숙하다면 이론적으로 이해하기 쉬움</li>
+							<!-- <li>옵저버들의 구조적 패턴을 따르므로 다른 옵저버의 작업 방식에 익숙하다면 이론적으로 이해하기 쉬움</li> -->
 							<li>이벤트는 호출 될 때 콜백이 시작되며 발생할 때마다 동기적으로 반응</li>
 							<li>이벤트에서 getClientBoundingRect() 처럼 성능에 비용이 많이 드는 메서드와 속성들을 사용해 직접 계산</li>
 							<li>이벤트는 캡처링, 버블링을 통해 전파, 더 많은 이벤트 발생</li>
@@ -203,7 +203,7 @@ var observer = new MutationObserver(callback);
 
 					<section>
 						<h2>감시 시작</h2>
-						<p>observe 메서드를 실행하고 처음으로 감시 시작<br>감시할 대상과 옵션들을 설정 후 옵저버에 전달</p>
+						<p>observe 메서드를 사용해 감시 시작<br>감시할 대상과 옵션들을 설정 후 옵저버에 전달</p>
 						<pre><code class="js">
 // 감시할 대상 선택
 var target = document.getElementById('some-element');
@@ -256,7 +256,7 @@ var config = {
 								<tr>
 									<td>childList</td>
 									<td>Boolean</td>
-									<td>대상 노드 하위 요소 (텍스트 포함)의 추가 및 제거</td>
+									<td>대상 노드 하위 요소의 추가 및 제거<br>(텍스트 포함)</td>
 								</tr>
 								<tr>
 									<td>attributes</td>
@@ -281,12 +281,12 @@ var config = {
 								<tr>
 									<td>characterDataOldValue</td>
 									<td>Boolean</td>
-									<td>텍스트(문자 데이터) 이전 값</td>
+									<td>텍스트 (문자 데이터) 이전 값</td>
 								</tr>
 								<tr>
 									<td>attributeFilter</td>
 									<td>Array</td>
-									<td>지정된 속성만 감시(모든 속성을 관찰 할 필요가 없는 경우)</td>
+									<td>지정된 속성만 감시<br>(모든 속성을 관찰 할 필요가 없는 경우)</td>
 								</tr>
 							</tbody>
 						</table>
@@ -294,8 +294,8 @@ var config = {
 
 					<section>
 						<h2>콜백 함수</h2>
-						<p>DOM 변경 사항이 발생한 후 수행 할 작업</p>
-						<p>MutationObserverInit을 사용하여 감시 할 내용 설정<br>콜백에서 Mutation​Record 객체를 통해 확인</p>
+						<p>DOM 변경이 발생 할 때마다 실행되는 함수</p>
+						<p>MutationObserverInit을 사용하여 감시 할 내용 설정<br>콜백에서 Mutation​Record 객체를 통해 변경 내용 확인</p>
 
 
 						<pre><code class="js">
@@ -367,7 +367,7 @@ var callback = (mutations, observer) => {
 
 					<section>
 						<h2>감시 중지</h2>
-						<p>당연하지만, 모니터링하는 프로세스가 증가하면 증가할수록 부하<br>작업이 끝난 후 감시 할 필요가 없어지면 중단</p>
+						<p>모니터링하는 프로세스가 증가하면 증가할수록 부하<br>작업이 끝난 후 더이상 감시 할 필요가 없어지면 중단</p>
 						<pre><code class="js">
 observer.disconnect();
                         </code></pre>
@@ -376,7 +376,7 @@ observer.disconnect();
 
 					<section>
 						<h2>takeRecords()</h2>
-						<p>감시를 중단 할 때 아직 보류 중인 모든 변경 내용을 처리</p>
+						<p>감시를 중단 할 때, 아직 보류 중인 모든 변경 내용을 처리</p>
 
 						<pre><code class="js">
 var mutations = observer.takeRecords();
@@ -385,18 +385,10 @@ var mutations = observer.takeRecords();
 if (mutations) {
 	callback(mutations);
 }
+// DOM 감시를 중단 하기 위해 disconnect() 호출 하기 전 수행
 
-// DOM 감시를 중지 하기 위해 disconnect() 호출 하기 전 수행
 observer.disconnect();
                         </code></pre>
-					</section>
-
-
-					<section>
-						<h2>브라우저 지원</h2>
-						<p><a href="https://github.com/megawac/MutationObserver.js" target="_blank">MutationObserver Polyfill</a></p>
-
-						<iframe src="https://caniuse.bitsofco.de/embed/index.html?feat=mutationobserver&amp;periods=future_1,current,past_1,past_2" frameborder="0" width="100%" height="500px"></iframe>
 					</section>
 
 
@@ -411,20 +403,19 @@ observer.disconnect();
 						</ul>
 						<!-- 상태, 구글 웹 사이트 번역기 언어 변경  =>  DOM 변형 감지  => callback 함수 변경된 언어 전달 (새로고침) -->
 						<p>특정 엘리먼트를 감시하고 있다가 변경 사항이 있으면<br>이전 텍스트와 현재 텍스트 비교</p>
-
 					</section>
 
 					<section>
 						<iframe width="100%" height="600" src="https://jsfiddle.net/hohoya33/6prg1kh5/embedded/result,js/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 					</section>
 
-
+					<!--
 					<section>
 						<h2>placeholder 번역 대응</h2>
 						<p>기존 placeholder 값을 임시 DOM 안에 넣은 후 옵저버로 감시</p>
 						<p>번역이 완료 되면 placeholder 속성을 변역된 언어로 변경</p>
 
-<!-- 						<pre><code class="js">
+						<pre><code class="js">
 $('[placeholder]:not(.translated)').each(function(){
 	var welTarget = $(this);
 	var sText = welTarget.attr('placeholder');
@@ -435,22 +426,27 @@ $('[placeholder]:not(.translated)').each(function(){
 
 // observer callback
 mutation.target.prev('[placeholder].translated').get(0).placeholder = mutation.target.innerText;
-                        </code></pre> -->
+                        </code></pre>
 					</section>
 
 
 					<section>
 						<iframe width="100%" height="600" src="https://jsfiddle.net/hohoya33/71dsz8ba/embedded/result,js/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+					</section> -->
+
+
+					<section>
+						<h2>브라우저 지원</h2>
+						<p><a href="https://github.com/megawac/MutationObserver.js" target="_blank">MutationObserver Polyfill</a></p>
+
+						<iframe src="https://caniuse.bitsofco.de/embed/index.html?feat=mutationobserver&amp;periods=future_1,current,past_1,past_2" frameborder="0" width="100%" height="500px"></iframe>
 					</section>
-
-
 
 
 					<section>
 						<h2>IntersectionObserver</h2>
 						<p>뷰포트와 DOM 요소 간의<br>교차하는 부분의 변화를 비동기적으로 감시하는 API</p>
-						<p>무한 스크롤 이미지 레이지 로딩 시<br>Scroll Event 대신 IntersectionObserver API를 사용해 최적화</p>
-
+						<!-- <p>무한 스크롤 이미지 레이지 로딩 시<br>Scroll Event 대신 IntersectionObserver API를 사용해 최적화</p> -->
 					</section>
 
 
@@ -492,7 +488,7 @@ $(window).on('scroll', function() {
 
 					<section>
 						<p>getBoundingClientRect() 요소 크기와 뷰포트에서 요소의 상대적인 위치 반환<br>이 함수는 리플로우(레이아웃) 현상이 발생한다는 단점</p>
-						<p>리플로우: 노드의 크기, 위치가 변경되어<br>현재 레이아웃의 일부 또는 전체를 다시 계산하는 과정</p>
+						<!-- <p>리플로우: 노드의 크기, 위치가 변경되어<br>현재 레이아웃의 일부 또는 전체를 다시 계산하는 과정</p> -->
 
 						<!-- <p>Reflow: DOM 노드의 레이아웃 수치(너비, 높이, 위치 등) 변경 시 영향 받은 모든 노드의(자신, 자식, 부모, 조상) 수치를 다시 계산(Recalculate)<br>렌더 트리를 재 생성 하는 과정</p> -->
 						<pre><code class="js">
@@ -723,18 +719,7 @@ var callback = (entries, observer) => {
 
 					<section>
 						<p>메인 스레드에 영향을 주지 않으면서 비동기적으로 요소 확인<br>getBoundingClientRect()를 호출 할 필요 없어 리플로우 현상 방지</p>
-
 						<img src="img/observer_inview.png" alt="" width="80%">
-					</section>
-
-
-					<section>
-						<iframe width="100%" height="600" src="https://jsfiddle.net/hohoya33/cmj4261t/embedded/result,js/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
-					</section>
-
-
-					<section>
-						<iframe width="100%" height="600" src="https://jsfiddle.net/hohoya33/hjdbfp6x/embedded/result,js/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 					</section>
 
 
@@ -757,7 +742,93 @@ if ('IntersectionObserver' in window) {
 } else {
 	Array.from(images).forEach(image => preloadImage(image));
 }
-                        </code></pre>
+						</code></pre>
+					</section>
+
+					<section>
+						<iframe width="100%" height="600" src="https://jsfiddle.net/hohoya33/cmj4261t/embedded/result,js/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+					</section>
+
+					<section>
+							<iframe width="100%" height="600" src="https://jsfiddle.net/hohoya33/hjdbfp6x/embedded/result,js/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+					</section>
+
+					<section>
+						<h2>새로운 동영상 정책</h2>
+						<p>웹 사이트의 데이터 비용, 사용자 배터리 절약<br>대부분의 모바일 브라우저는 자동 재생 기능 사용 중지</p>
+
+						<p>GIF 애니메이션 이미지<br>사용자 경험(UX)를 개선하려고 다양한 변화 시도</p>
+						<p>Safari for iOS 10, Chrome for Android 53<br>소리를 출력하지 않는 조건 페이지 로드 후 동영상 자동 재생 가능</p>
+
+
+						<!-- https://webkit.org/blog/6784/new-video-policies-for-ios/
+						https://medium.com/code-divoire/autoplaying-inline-videos-on-iphone-ios-10-using-angular-d4e2eaba2164 -->
+					</section>
+
+					<section>
+						<h2>동영상 자동 재생</h2>
+						<p>muted 속성, autoplay 속성 지정 후 자동 재생 가능</p>
+						<p>Safari - 동영상에 오디오가 없는 경우 autoplay 속성만으로 재생 가능<br>muted 속성 없이</p>
+						<pre><code class="html">
+<video src="video.mp4" muted autoplay></video>
+
+<!-- 오디오가 없는 영상 자동 재생 -->
+<video src="video-no-audio.mp4" autoplay></video>
+						</code></pre>
+					</section>
+
+
+					<section>
+						<p>화면에 보이는 상태가되었을 때 동영상 재생 시작<br><br>재생 중 스크롤 이동으로 보이지 않는 상태가되면 자동으로 일시 정지</p>
+						<!-- <a href="https://googlechrome.github.io/samples/muted-autoplay/index.html" target="_blank">Android 자동 재생 Demo</a> -->
+					</section>
+
+
+					<section>
+						<h2>스크립트에서 재생</h2>
+						<p>Chrome, Safari 위의 조건을 만족하는 경우<br>사용자 상호 작용없이 스크립트에서 동영상 재생 시작 가능<br>ex) HTMLVideoElement.play()</p>
+
+						<pre><code class="js">
+const video = document.querySelector('video');
+const play = video.play();
+
+// HTMLVideoElement.play()메소드가 Promise 반환
+// 만약 위의 자동 실행 조건이 만족되지 않을 때
+// play()메소드로 스크립트에서 재생 시 Promise reject
+
+if (play instanceof Promise) {
+	play.catch(error => {
+		console.error('자동 재생 안됨!');
+	});
+}
+						</code></pre>
+					</section>
+
+
+					<section>
+						<p>스크립트 조작으로 재생을 하면<br>동영상이 화면에 보이지 않아도 재생 시작 가능</p>
+						<p>스크롤 이동으로 화면에 보이지 않는 상태가 되어도<br>동영상이 자동으로 일시 정지되지 않음</p>
+					</section>
+
+					<section>
+						<h2>인라인 재생 지원 (Safari)</h2>
+						<p>전체 화면 재생 → 브라우저에서 인라인 동영상 재생 가능 (Safari for iOS 10)<br>playsinline 속성</p>
+						<!-- (iOS 9 이전 WebView에서 webkit-playsinline 속성으로 지원 -->
+
+						<pre><code class="html">
+<video src="video.mp4" playsinline></video>
+						</code></pre>
+					</section>
+
+
+					<section>
+						<h2>적용 시 예상 이슈</h2>
+						<ul>
+							<li>사용자가 트리거로 재생 시 화면에 보이지 않을 때 처리? 계속 재생됨</li>
+							<li>iOS 기기가 저전력 모드(배터리 20%)로 실행되고 있지 않은지 확인</li>
+							<li>Android Chrome인 경우 데이터 세이버 모드 자동 재생 차단</li>
+							<li>WebView에서 allowsInlineMediaPlayback 구성이 설정되어 있는지 확인</li>
+						</ul>
 					</section>
 
 
@@ -827,7 +898,7 @@ observer.observe('some-element');
 
 					<section>
 						<h2>콜백 함수</h2>
-						<p>크기 변경이 발생 할 때마다 처리할 작업</p>
+						<p>크기 변경이 발생 할 때마다 실행되는 함수</p>
 						<pre><code class="js">
 var callback = (entries) => {
 	entries.forEach(entry => {
@@ -948,7 +1019,7 @@ if ('ResizeObserver' in window) {
 						<ul>
 							<li>최대 400개의 상품 → 1000개 상품 대응</li>
 							<li>하위 브라우저(IE8) 대응</li>
-							<li>스크롤 시 현재 화면의 상품 체크 로직 추가 시, 스크롤 기능이 오히 더 느려짐</li>
+							<li>스크롤 시 현재 화면의 상품 체크 로직 추가 시, 스크롤 기능이 오히려 더 느려짐</li>
 							<li>라이브러리가 지원되지 않는 브라우저는 기존 방식으로 분기처리</li>
 							<!-- <li>메인 클릭한 상품 이슈</li> -->
 						</ul>
@@ -1002,16 +1073,15 @@ if ('ResizeObserver' in window) {
 
 
 					<section>
-						<p>스크롤 시 위 아래로 데이터 추가 가능하도록 대응</p>
+						<p>스크롤 시 위 아래로 데이터가 추가 가능하도록 대응</p>
 						<img src="img/pre_app_w.png" alt="">
 					</section>
 
 
 					<section>
 						<h2>이미지 로딩</h2>
-						<p>데이터 요청 시점에 80개의 상품 이미지들 한번에 불러온다는 것</p>
-						<p>페이지를 그려낸 뒤에도 연속적으로 네트워크 호출이 발생<br>로딩된 이미지가 배치되면서 리플로우(레이아웃) 발생</p>
-						<p>성능이 낮은 디바이스에서 데이터 요청 후 스크롤 멈춤 현상 발생</p>
+						<p>데이터 요청 시점에 80개의 상품 이미지들 한번에 불러온다는 것<br>페이지를 그려낸 뒤에도 연속적으로 네트워크 호출이 발생</p>
+						<p>성능이 낮은 디바이스에서 데이터 추가 후 딜레이 현상 발생</p>
 						<!-- <p>이미지가 필요한 순간에 불러오도록 개선</p> -->
 						<!-- 이미지 로딩 시간 및 상품 이미지들이 추가되기 까지 시간이 올래 걸림 -->
 						<!--
@@ -1030,7 +1100,7 @@ if ('ResizeObserver' in window) {
 						<!-- <p>지연 로딩은 필요한 시점에 실행되도록 동작을 뒤로 미루는 방법</p> -->
 						<!-- <p>체감 속도를 향상</p> -->
 						<!-- <p>페이지에 보이지도 않는 이미지를 미리 받아둘 필요가 없는 경우<br>이미지를 나중에 로드하는 방법</p> -->
-						<p>이미지를 처음부터 불러오는 게 아니라<br>사용자가 스크롤을 해서 이미지 요가 화면에 등장하는 순간 로딩 시작</p>
+						<p>이미지를 처음부터 불러오는 게 아니라<br>사용자가 스크롤을 해서 이미지가 화면에 등장하는 순간 로딩 시작</p>
 						<p>IntersectionObserver API 사용</p>
                         </code></pre>
 					</section>
@@ -1161,7 +1231,7 @@ addItemList: function(aItemList){
 
 
 					<section>
-						<p>잠시 스타일이 적용되지 않은 웹 페이지가 나타나는 현상 (FOUC)</p>
+						<p>잠깐 스타일이 적용되지 않은 페이지가 나타나는 현상 (FOUC)</p>
 						<img src="img/page_lazyload_images1.gif" alt="" width="50%">
 					</section>
 
@@ -1175,7 +1245,7 @@ addItemList: function(aItemList){
 						</code></pre>
 
 						<pre><code class="css">
-.lazy-image {padding-bottom:100%;position:relative;display:block;overflow:hidden;background:rgba(0,0,0,0.03)}
+.lazy-image {padding-bottom:100%;position:relative;display:block;overflow:hidden}
 .lazy-image img {position:absolute;left:0;top:0;width:100%;height:auto}
                         </code></pre>
 					</section>
