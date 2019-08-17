@@ -289,6 +289,7 @@ $(window).on('scroll', function() {
 
 ### 뷰포트 요소 확인
 스크롤 시 해당 요소가 화면에 들어왔는지 위치 확인을 위해 수동으로 계산
+
 <img src="img/scrolltop.png" alt="" width="50%">
 
 > getBoundingClientRect() 요소 크기와 뷰포트에서 요소의 상대적인 위치 반환. 이 함수는 리플로우(레이아웃) 현상이 발생한다는 단점
@@ -306,6 +307,7 @@ function isElementInViewport (el) {
 ```
 
 > 이러한 모든 배치 관련 계산이 메인 쓰레드에서 수행
+
 <img src="img/scroll_inview.png" alt="" width="80%">
 
 
@@ -325,15 +327,149 @@ IntersectionObserver 객체의 생성자는 두 개의 파라미터 사용
 var observer = new IntersectionObserver(callback, options);
 ```
 
+### 감시 옵션
+root, rootMargin, threshold 세 가지 옵션을 통해 교차 지점 설정
+
+```js
+var options = {
+    root: null,
+    rootMargin: '0px 0px 0px 0px',
+    threshold: 0
+};
+```
+
+### root
+- 교차 영역의 기준이 될 요소 지정
+- 이 속성을 정의하지 않으면 기본으로 브라우저 뷰포트 사용
+
+<img src="img/root.png" alt="" width="80%">
+
+```js
+var options = {
+    root: null // document.querySelector('.container')
+};
+```
+
+### rootMargin
+- root 요소의 여백
+- 뷰포트를 확장 또는 축소
+- px 또는 %로 표시, 축약 가능 (css margin과 동일)
+
+<img src="img/rootMargin.png" alt="" width="80%">
+
+```js
+var options = {
+    rootMargin: '0px 0px 0px 0px'
+};
+```
+
+### threshold
+- 0.0 ~ 1.0 사이의 숫자 또는 이 숫자들로 이루어진 배열
+- 콜백이 실행 되어야하는 시점 지정
+- 0.5: 타겟이 root 요소 내부에 50% 교차 할 때 콜백 실행
+
+<img src="img/threshold.png" alt="" width="80%">
+
+```js
+var options = {
+    threshold:  0.5
+    // threshold: [0, 0.2, 0.4, 0.6, 0.8, 1.0]
+    // 교차 영역이 20% 변경 될 때마다 callback 실행
+};
+```
+
+### 메서드
+- observer.observe(targetElement) - 대상 요소 감시 시작
+- observer.unobserve(targetElement) - 특정 요소에 대한 감시 중지
+- observer.disconnect() - 다수의 요소를 감시하고 있을 때, 모든 감시 중지
+- observer.takeRecords() - 교차하는지 여부에 관계없이 모든 감시 대상 목록 반환
+
+### 감시 시작
+옵저버가 해당 요소를 감시 할 수 있도록 observe 메서드에 대상 요소 전달
+
+```js
+// 대상 요소는 root 요소의 자식이어야 됨
+var target = document.getElementById('some-element');
+observer.observe(target);
 
 
+// 여러 대상을 추적해야하는 경우 각 대상을 개별적으로 추가
+var images = document.querySelectorAll('.lazy');
+images.forEach((el) => {
+    observer.observe(el);
+});
+```
 
+### 콜백 함수
+해당 요소가 화면에 들어오거나 벗어날 때마다 콜백 함수 호출. 콜백 함수는 IntersectionObserverEntry 배열 객체를 받음
 
+```js
+var callback = (entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // 타겟이 화면에 보이면
+            entry.target.classList.add('box--visible');
+        } else {
+            // 타겟이 화면을 벗어나면
+            entry.target.classList.remove('box--visible');
+        }
+    });
+};
+```
 
+### IntersectionObserverEntry
+<table>
+    <colgroup>
+    <col style="width:20%">
+    <col style="width:80%">
+    </colgroup>
+    <thead>
+        <tr>
+            <td>속성</td>
+            <td>설명</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>rootBounds</td>
+            <td>root 요소 위치와 크기</td>
+        </tr>
+        <tr>
+            <td>boundingClientRect</td>
+            <td>대상 요소 위치와 크기</td>
+        </tr>
+        <tr>
+            <td>intersectionRect</td>
+            <td>교차된 영역 정보 (보이는 부분)</td>
+        </tr>
+        <tr>
+            <td>intersectionRatio</td>
+            <td>교차하는 영역 비율 (threshold와 같이 0.0 ~ 1.0 값)</td>
+        </tr>
+        <tr>
+            <td>isIntersecting</td>
+            <td>대상 요소가 root에 표시되었는지 여부</td>
+        </tr>
+        <tr>
+            <td>target</td>
+            <td>대상 DOM 요소</td>
+        </tr>
+        <tr>
+            <td>time</td>
+            <td>교차가 발생한 시간</td>
+        </tr>
+    </tbody>
+</table>
 
+<img src="img/callback.png" alt="" width="70%">
 
+> 메인 스레드에 영향을 주지 않으면서 비동기적으로 요소 확인. getBoundingClientRect()를 호출 할 필요 없어 리플로우 현상 방지
 
+<img src="img/observer_inview.png" alt="" width="80%">
 
+### 브라우저 지원
+- [IntersectionObserver](https://caniuse.bitsofco.de/embed/index.html?feat=intersectionobserver&amp;periods=future_1,current,past_1,past_2)
+- [IntersectionObserver Polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill)
 
 
 
