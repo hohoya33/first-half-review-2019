@@ -842,10 +842,8 @@ if (play instanceof Promise) {
 					<section>
 						<h2>Window Resize Event</h2>
 						<p>window.resize 이벤트는 화면 크기를 기반으로<br>각 요소의 크기 변화를 감지 변경함으로 성능 낭비</p>
-<!-- 						<p>화면 크기를 변경하지 않고 엘리먼트 크기를 변경하는 경우</p>
+<!-- 					<p>화면 크기를 변경하지 않고 엘리먼트 크기를 변경하는 경우</p>
 						요소의 크기의 변경 사항만 알고 싶다면
-
-
 						<p>요소의 크기를 알 필요가 있거나(window.resize) 화면이 가로, 세로인 경우(window.orientationchange)</p>
 						<p>resize 이벤트가 1초에 거의 60번 발생하기 때문에 창 크기를 변경할 때 성능 문제가 발생</p>
 						<p>CSS Media Queries를 사용하여 화면 크기로 구성 요소의 스타일 지정</p> -->
@@ -877,8 +875,6 @@ $(window).resize(function(){
 						<p>ResizeObserver 인스턴스 생성<br>DOM 요소의 크기 변화 할 때 마다 실행 될 콜백함수</p>
 						<pre><code class="js">
 var observer = new ResizeObserver(callback);
-
-observer.observe('some-element');
                         </code></pre>
 					</section>
 
