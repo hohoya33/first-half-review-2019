@@ -472,16 +472,74 @@ var callback = (entries, observer) => {
 - [IntersectionObserver Polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill)
 
 
+> IntersectionObserver가 브라우저에서 지원되는지 여부 확인. 그렇지 않으면 기존 방식으로 처리
+
+```js
+// IntersectionObserver 속성이 window객체에 있는지 확인
+if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(callback, options);
+    images.forEach(image => {
+        observer.observe(image);
+    });
+} else {
+    Array.from(images).forEach(image => preloadImage(image));
+}
+```
+
+## IntersectionObserver 동영상 자동 재생
+
+### 새로운 동영상 정책
+- 웹 사이트의 데이터 비용, 사용자 배터리 절약 대부분의 모바일 브라우저는 자동 재생 기능 사용 중지
+- GIF 애니메이션 이미지 사용자 경험(UX)를 개선하려고 다양한 변화 시도
+- Safari for iOS 10, Chrome for Android 53 소리를 출력하지 않는 조건 페이지 로드 후 동영상 자동 재생 가능
+
+### 동영상 자동 재생
+- muted 속성, autoplay 속성 지정 후 자동 재생 가능
+- Safari - 동영상에 오디오가 없는 경우 autoplay 속성만으로 재생 가능. muted 속성 없이
+
+> 화면에 보이는 상태가되었을 때 동영상 재생 시작. 재생 중 스크롤 이동으로 보이지 않는 상태가되면 자동으로 일시 정지
 
 
+```html
+<video src="video.mp4" muted autoplay></video>
 
+<!-- 오디오가 없는 영상 자동 재생 -->
+<video src="video-no-audio.mp4" autoplay></video>
+```
 
+### 스크립트로 재생
+Chrome, Safari 위의 조건을 만족하는 경우 사용자 상호 작용없이 스크립트에서 동영상 재생 시작 가능. ex) HTMLVideoElement.play()
 
+```js
+const video = document.querySelector('video');
+const play = video.play();
 
+// HTMLVideoElement.play()메소드가 Promise 반환
+// 만약 위의 자동 실행 조건이 만족되지 않을 때
+// play()메소드로 스크립트에서 재생 시 Promise reject
 
+if (play instanceof Promise) {
+    play.catch(error => {
+        console.error('자동 재생 안됨!');
+    });
+}
+```
 
+>스크립트 조작으로 재생을 하면 동영상이 화면에 보이지 않아도 재생 시작 가능
+스크롤 이동으로 화면에 보이지 않는 상태가 되어도 동영상이 자동으로 일시 정지되지 않음
 
+### 인라인 재생 지원 (Safari)
+전체 화면 재생 → 브라우저에서 인라인 동영상 재생 가능 (Safari for iOS 10) playsinline 속성
 
+```html
+<video src="video.mp4" playsinline></video>
+```
+
+### 적용 시 예상 이슈
+- 사용자가 트리거로 재생 시 화면에 보이지 않을 때 처리? 계속 재생됨
+- iOS 기기가 저전력 모드(배터리 20%)로 실행되고 있지 않은지 확인
+- Android Chrome인 경우 데이터 세이버 모드 자동 재생 차단
+- WebView에서 allowsInlineMediaPlayback 구성이 설정되어 있는지 확인
 
 
 
