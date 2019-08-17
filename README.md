@@ -255,20 +255,75 @@ observer.disconnect();
 ```
 
 ### 다국어 프로젝트
+언어 변경 체크를 위해 Mutation Observer API 사용
+
+- 구글 웹 사이트 번역기 사용
+- 개발 시 필요한 API 지원이 안되는 문제
+- 언어 변경 후, 변역이 완료되면 다국어 처리(i18n), 페이지 새로고침을 위한 callback 함수 필요
+- 특정 엘리먼트를 감시하고 있다가 변경 사항이 있으면 이전 텍스트와 현재 텍스트 비교
+
+### placeholder 번역 대응
+- 기존 placeholder 값을 임시 DOM 안에 넣은 후 옵저버로 감시
+- 번역이 완료 되면 placeholder 속성을 변역된 언어로 변경
+
 
 ### 브라우저 지원
-[MutationObserver Polyfill](https://github.com/megawac/MutationObserver.js)
-
-<figure class="video_container">
-    <iframe src="https://caniuse.bitsofco.de/embed/index.html?feat=mutationobserver&amp;periods=future_1,current,past_1,past_2" frameborder="0" width="100%" height="500"></iframe>
-</figure>
+- [Mutation Observer](https://caniuse.bitsofco.de/embed/index.html?feat=mutationobserver&amp;periods=future_1,current,past_1,past_2)
+- [MutationObserver Polyfill](https://github.com/megawac/MutationObserver.js)
 
 
+## IntersectionObserver
+뷰포트와 DOM 요소 간의 교차하는 부분의 변화를 비동기적으로 감시하는 API
 
 
+### Scroll Event
+- 스크롤 이벤트는 동기적으로 실행 (메인 스레드에 영향)
+- 스크롤 할 때마다 이벤트가 끊임없이 호출
+- Debouncing, Throttling을 통해 스크롤 이벤트 함수 호출 빈도 조정
+```js
+$(window).on('scroll', function() {
+  // 1. 각 이미지가 현재 뷰포트에 존재하는지 확인 후
+  // 2. 이미지 로드
+});
+```
+
+### 뷰포트 요소 확인
+스크롤 시 해당 요소가 화면에 들어왔는지 위치 확인을 위해 수동으로 계산
+<img src="img/scrolltop.png" alt="" width="50%">
+
+> getBoundingClientRect() 요소 크기와 뷰포트에서 요소의 상대적인 위치 반환. 이 함수는 리플로우(레이아웃) 현상이 발생한다는 단점
+
+```js
+function isElementInViewport (el) {
+  var rect = el.getBoundingClientRect();
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  );
+}
+```
+
+> 이러한 모든 배치 관련 계산이 메인 쓰레드에서 수행
+<img src="img/scroll_inview.png" alt="" width="80%">
 
 
+## IntersectionObserver
+> scroll 이벤트는 여러 브라우저에서 가장 호환성이 좋긴 하지만, 최신 브라우저는 요소 확인을 IntersectionObserver를 통해 더 뛰어난 성능과 효율적인 방식 제공
 
+- 대상 요소 위치를 지속적으로 계산할 필요 없음
+- 대상 요소가 뷰포트에 들어오거나 벗어날 때 콜백 제공
+
+### 사용 방법
+IntersectionObserver 객체의 생성자는 두 개의 파라미터 사용
+
+- 콜백은 요소가 화면에 교차 할 때마다 실행되는 함수
+- 옵션은 다양한 교차 지점을 설정 할 수 있는 사용자 정의 객체
+
+```js
+var observer = new IntersectionObserver(callback, options);
+```
 
 
 
